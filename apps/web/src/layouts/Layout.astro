@@ -5,6 +5,7 @@ import i18next from "i18next";
 
 import type { TranslationKey } from "#/i18n/resources";
 import { defaultLocale, supportedLocales } from "#/i18n/config";
+import { localizePathname } from "#/i18n/pathname";
 import "#/styles/app.css";
 
 interface Props {
@@ -42,7 +43,6 @@ const imageUrl = image ? new URL(image, Astro.site) : undefined;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="oklch(98% 0.005 250)" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     {
@@ -52,9 +52,12 @@ const imageUrl = image ? new URL(image, Astro.site) : undefined;
           hreflang={supportedLocale}
           href={
             new URL(
-              supportedLocale === defaultLocale
-                ? Astro.url.pathname
-                : `/${supportedLocale}${Astro.url.pathname}`,
+              localizePathname(
+                Astro.url.pathname,
+                supportedLocale,
+                supportedLocales,
+                defaultLocale,
+              ),
               Astro.site,
             )
           }

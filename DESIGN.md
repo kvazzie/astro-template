@@ -85,6 +85,8 @@ spacing:
   selector-unit: 4px
   field-unit: 4px
   border: 1px
+  focus-ring: 2px
+  focus-offset: 3px
   reading-max: 720px
   content-max: 1200px
 components:

@@ -1,4 +1,6 @@
 {
-  "nameKey": "site.name",
-  "defaultDescriptionKey": "site.description"
+  "default": {
+    "nameKey": "site.name",
+    "defaultDescriptionKey": "site.description"
+  }
 }

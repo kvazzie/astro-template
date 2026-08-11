@@ -25,8 +25,8 @@ invoking command, not from this repository's `packageManager` field.
 contract documented here. The CLI also removes `private` from the root
 `package.json`; GitHub Template and `git clone` preserve it.
 
-npm, Yarn, and Bun scaffolding are not supported. Clone the repository only when
-developing the template itself.
+Scaffolding through other package managers is not supported. Clone the
+repository only when developing the template itself.
 
 ## Requirements
 
@@ -120,8 +120,9 @@ pnpm design:check
 
 Internationalization is enabled before the project needs a second language.
 English is the only initial locale and has no URL prefix. Add locales in
-`apps/web/src/i18n/config.ts`; the Astro, i18next, and sitemap configuration reads
-the same definition.
+`apps/web/src/i18n/config.ts`; the integration injects Astro's native i18n config
+from that definition, while i18next and sitemap consume the same values. Do not
+add a duplicate top-level `i18n` block to `astro.config.ts`.
 
 Interface copy and SEO metadata use typed i18next keys. Add English resources
 under `apps/web/src/i18n/locales/en/`. Authored prose belongs in localized content

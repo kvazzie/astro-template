@@ -27,9 +27,12 @@ created by lifecycle/build commands.
 ## Architecture rules
 
 - Keep `apps/web` static until a product requirement chooses an adapter.
-- Use the `#/*` alias for app-internal imports.
+- Use the `#/*` alias for cross-directory imports inside `apps/web/src`.
+  Colocated modules and bootstrap configuration may use relative imports.
 - Treat `@gutenye/astro-i18next` as the locale lifecycle owner. Do not call the
-  global `changeLanguage()` from components.
+  global `changeLanguage()` from components. The integration injects Astro's
+  native i18n config from the shared `preload` and `lng` values; do not duplicate
+  it with a top-level `i18n` block in `astro.config.ts`.
 - User-interface copy, validation messages, and SEO metadata use typed i18n keys.
   Authored long-form content belongs in localized content entries.
 - Add locale definitions once in `src/i18n/config.ts`; Astro, i18next, sitemap,
@@ -46,7 +49,9 @@ created by lifecycle/build commands.
 - Use DaisyUI semantic component classes and theme variables. Components must not
   hardcode raw colors.
 - The light/dark bridge in `apps/web/src/styles/app.css` maps semantic DaisyUI
-  roles to generated tokens; it must not contain token values.
+  roles to generated tokens; it must not contain token values. DaisyUI's
+  unitless `--depth` and `--noise` feature switches are adapter protocol, not
+  design tokens, and stay explicit there.
 - Run `pnpm design:check` after changing the design system.
 - Avoid gradients, glass effects, decorative animation, excessive cards, and
   oversized pills unless the product establishes a concrete reason.

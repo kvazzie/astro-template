@@ -59,6 +59,8 @@ export const REQUIRED_DESIGN_TOKENS = [
   "--spacing-selector-unit",
   "--spacing-field-unit",
   "--spacing-border",
+  "--spacing-focus-ring",
+  "--spacing-focus-offset",
   "--spacing-sm",
   "--spacing-md",
 ];

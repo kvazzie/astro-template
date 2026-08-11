@@ -15,6 +15,8 @@ export default defineConfig({
   output: "static",
   site,
   integrations: [
+    // This integration injects Astro's native i18n config from `preload` and
+    // `lng`; declaring a second top-level config creates duplicate routes.
     i18next({
       preload: [...supportedLocales],
       lng: defaultLocale,

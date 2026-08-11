@@ -37,6 +37,8 @@
   --size-selector: var(--spacing-selector-unit);
   --size-field: var(--spacing-field-unit);
   --border: var(--spacing-border);
+
+  /* DaisyUI protocol switches are unitless; Design.md exports value tokens. */
   --depth: 0;
   --noise: 0;
 }
@@ -73,14 +75,16 @@
   --size-selector: var(--spacing-selector-unit);
   --size-field: var(--spacing-field-unit);
   --border: var(--spacing-border);
+
+  /* DaisyUI protocol switches are unitless; Design.md exports value tokens. */
   --depth: 0;
   --noise: 0;
 }
 
 @layer base {
   :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 3px;
+    outline: var(--spacing-focus-ring) solid var(--color-primary);
+    outline-offset: var(--spacing-focus-offset);
   }
 
   body {

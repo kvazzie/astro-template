@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { file } from "astro/loaders";
 import { z } from "astro/zod";
 
-import { isTranslationKey, type TranslationKey } from "./i18n/resources";
+import { isTranslationKey, type TranslationKey } from "#/i18n/resources";
 
 const translationKey = z.custom<TranslationKey>(
   (value) => typeof value === "string" && isTranslationKey(value),
@@ -10,10 +10,7 @@ const translationKey = z.custom<TranslationKey>(
 );
 
 const site = defineCollection({
-  loader: glob({
-    pattern: "**/*.{json,yaml,yml}",
-    base: "./src/content/site",
-  }),
+  loader: file("src/content/site/default.json"),
   schema: z.object({
     nameKey: translationKey,
     defaultDescriptionKey: translationKey,
