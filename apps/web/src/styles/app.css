@@ -37,10 +37,8 @@
   --size-selector: var(--spacing-selector-unit);
   --size-field: var(--spacing-field-unit);
   --border: var(--spacing-border);
-
-  /* DaisyUI protocol switches are unitless; Design.md exports value tokens. */
-  --depth: 0;
-  --noise: 0;
+  --depth: var(--spacing-daisy-depth);
+  --noise: var(--spacing-daisy-noise);
 }
 
 @plugin "daisyui/theme" {
@@ -75,10 +73,8 @@
   --size-selector: var(--spacing-selector-unit);
   --size-field: var(--spacing-field-unit);
   --border: var(--spacing-border);
-
-  /* DaisyUI protocol switches are unitless; Design.md exports value tokens. */
-  --depth: 0;
-  --noise: 0;
+  --depth: var(--spacing-daisy-depth);
+  --noise: var(--spacing-daisy-noise);
 }
 
 @layer base {

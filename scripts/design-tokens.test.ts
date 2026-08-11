@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  appendDaisyFeatureTokens,
   REQUIRED_DESIGN_TOKENS,
   validateDesignCss,
 } from "./design-tokens.mjs";
@@ -25,5 +26,18 @@ describe("generated design tokens", () => {
     ).join(" ")} }`;
 
     expect(validateDesignCss(css)).toEqual({ ok: true, missing: [] });
+  });
+
+  it("exports DaisyUI's unitless theme values from DESIGN.md", () => {
+    const design = `---
+spacing:
+  daisy-depth: 0
+  daisy-noise: 1
+---`;
+
+    expect(appendDaisyFeatureTokens("@theme {\n}\n", design)).toBe(`@theme {
+  --spacing-daisy-depth: 0;
+  --spacing-daisy-noise: 1;
+}\n`);
   });
 });

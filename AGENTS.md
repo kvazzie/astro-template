@@ -49,9 +49,7 @@ created by lifecycle/build commands.
 - Use DaisyUI semantic component classes and theme variables. Components must not
   hardcode raw colors.
 - The light/dark bridge in `apps/web/src/styles/app.css` maps semantic DaisyUI
-  roles to generated tokens; it must not contain token values. DaisyUI's
-  unitless `--depth` and `--noise` feature switches are adapter protocol, not
-  design tokens, and stay explicit there.
+  roles to generated tokens; it must not contain token values.
 - Run `pnpm design:check` after changing the design system.
 - Avoid gradients, glass effects, decorative animation, excessive cards, and
   oversized pills unless the product establishes a concrete reason.

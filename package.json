@@ -52,7 +52,8 @@
     "turbo": "^2.10.7",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.63.0",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "yaml": "^2.9.0"
   },
   "pnpm": {
     "peerDependencyRules": {

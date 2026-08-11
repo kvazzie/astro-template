@@ -107,8 +107,8 @@ ignored: `prepare`, `dev`, `build`, and `check` materialize it when needed.
 
 `apps/web/src/styles/app.css` imports that file and contains stable light/dark
 DaisyUI bridge blocks. Those blocks only map semantic roles to generated custom
-properties; they never duplicate values. The validator fails if a mapped token is
-missing.
+properties; they never duplicate design values. The validator fails if a mapped
+token is missing.
 
 Change the design in `DESIGN.md`, then run:
 

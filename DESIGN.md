@@ -87,6 +87,8 @@ spacing:
   border: 1px
   focus-ring: 2px
   focus-offset: 3px
+  daisy-depth: 0
+  daisy-noise: 0
   reading-max: 720px
   content-max: 1200px
 components:

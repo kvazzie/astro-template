@@ -11,6 +11,7 @@ import { watch } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { parse as parseYaml } from "yaml";
 
 const repositoryRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -61,6 +62,8 @@ export const REQUIRED_DESIGN_TOKENS = [
   "--spacing-border",
   "--spacing-focus-ring",
   "--spacing-focus-offset",
+  "--spacing-daisy-depth",
+  "--spacing-daisy-noise",
   "--spacing-sm",
   "--spacing-md",
 ];
@@ -71,6 +74,32 @@ export function validateDesignCss(css) {
   );
 
   return { ok: missing.length === 0, missing };
+}
+
+export function appendDaisyFeatureTokens(css, designSource) {
+  const frontmatter = designSource.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+
+  if (!frontmatter) {
+    throw new Error("DESIGN.md must begin with YAML front matter");
+  }
+
+  const design = parseYaml(frontmatter[1]);
+  const features = {
+    "daisy-depth": design?.spacing?.["daisy-depth"],
+    "daisy-noise": design?.spacing?.["daisy-noise"],
+  };
+
+  for (const [name, value] of Object.entries(features)) {
+    if (typeof value !== "number" || value < 0 || value > 1) {
+      throw new Error(`spacing.${name} must be a number between 0 and 1`);
+    }
+  }
+
+  const declarations = Object.entries(features)
+    .map(([name, value]) => `  --spacing-${name}: ${value};`)
+    .join("\n");
+
+  return css.replace(/\n}\s*$/, `\n${declarations}\n}\n`);
 }
 
 function runDesignMd(args) {
@@ -109,7 +138,11 @@ function runDesignMd(args) {
 
 function exportDesignCss() {
   runDesignMd(["lint", designPath]);
-  const css = runDesignMd(["export", "--format", "css-tailwind", designPath]);
+  const designSource = readFileSync(designPath, "utf8");
+  const css = appendDaisyFeatureTokens(
+    runDesignMd(["export", "--format", "css-tailwind", designPath]),
+    designSource,
+  );
   const validation = validateDesignCss(css);
 
   if (!validation.ok) {
