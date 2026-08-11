@@ -1,0 +1,32 @@
+name: Workflow proposal
+description: Suggest a focused improvement that fits the template's philosophy.
+title: "[Workflow]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template follows one maintainer's definition of a good Astro
+        project. Proposals are welcome, especially from people using a similar
+        workflow, but broad configurability is not a goal.
+  - type: textarea
+    id: friction
+    attributes:
+      label: Current friction
+      description: What concrete recurring problem does the current workflow create?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest opinionated change that resolves the friction.
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs
+      description: What complexity, maintenance, or constraints would this introduce?
+    validations:
+      required: true

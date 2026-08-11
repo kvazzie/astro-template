@@ -1,0 +1,34 @@
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Build and test output
+.astro/
+dist/
+coverage/
+.turbo/
+
+# Generated design artifacts
+apps/web/src/styles/design.generated.css
+
+# Local environment
+.devenv/
+.direnv/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# Provider state
+.wrangler/
+
+# Logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db
+
+# Editors (project-owned settings are committed explicitly)
+.idea/
+*.swp

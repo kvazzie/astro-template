@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@import "./design.generated.css";
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: var(--color-light-base-100);
+  --color-base-200: var(--color-light-base-200);
+  --color-base-300: var(--color-light-base-300);
+  --color-base-content: var(--color-light-base-content);
+  --color-primary: var(--color-light-primary);
+  --color-primary-content: var(--color-light-primary-content);
+  --color-secondary: var(--color-light-secondary);
+  --color-secondary-content: var(--color-light-secondary-content);
+  --color-accent: var(--color-light-accent);
+  --color-accent-content: var(--color-light-accent-content);
+  --color-neutral: var(--color-light-neutral);
+  --color-neutral-content: var(--color-light-neutral-content);
+  --color-info: var(--color-light-info);
+  --color-info-content: var(--color-light-info-content);
+  --color-success: var(--color-light-success);
+  --color-success-content: var(--color-light-success-content);
+  --color-warning: var(--color-light-warning);
+  --color-warning-content: var(--color-light-warning-content);
+  --color-error: var(--color-light-error);
+  --color-error-content: var(--color-light-error-content);
+  --radius-selector: var(--radius-control-selector);
+  --radius-field: var(--radius-control-field);
+  --radius-box: var(--radius-container-box);
+  --size-selector: var(--spacing-selector-unit);
+  --size-field: var(--spacing-field-unit);
+  --border: var(--spacing-border);
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: var(--color-dark-base-100);
+  --color-base-200: var(--color-dark-base-200);
+  --color-base-300: var(--color-dark-base-300);
+  --color-base-content: var(--color-dark-base-content);
+  --color-primary: var(--color-dark-primary);
+  --color-primary-content: var(--color-dark-primary-content);
+  --color-secondary: var(--color-dark-secondary);
+  --color-secondary-content: var(--color-dark-secondary-content);
+  --color-accent: var(--color-dark-accent);
+  --color-accent-content: var(--color-dark-accent-content);
+  --color-neutral: var(--color-dark-neutral);
+  --color-neutral-content: var(--color-dark-neutral-content);
+  --color-info: var(--color-dark-info);
+  --color-info-content: var(--color-dark-info-content);
+  --color-success: var(--color-dark-success);
+  --color-success-content: var(--color-dark-success-content);
+  --color-warning: var(--color-dark-warning);
+  --color-warning-content: var(--color-dark-warning-content);
+  --color-error: var(--color-dark-error);
+  --color-error-content: var(--color-dark-error-content);
+  --radius-selector: var(--radius-control-selector);
+  --radius-field: var(--radius-control-field);
+  --radius-box: var(--radius-container-box);
+  --size-selector: var(--spacing-selector-unit);
+  --size-field: var(--spacing-field-unit);
+  --border: var(--spacing-border);
+  --depth: 0;
+  --noise: 0;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  body {
+    font-family: var(--font-body), sans-serif;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    z-index: 50;
+    translate: 0 -200%;
+    border-radius: var(--radius-control-field);
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .skip-link:focus {
+    translate: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

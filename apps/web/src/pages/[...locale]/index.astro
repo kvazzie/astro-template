@@ -1,0 +1,20 @@
+---
+import i18next from "i18next";
+
+import Layout from "#/layouts/Layout.astro";
+
+export { getStaticPaths } from "@gutenye/astro-i18next";
+---
+
+<Layout title="page.title" description="page.description">
+  <section class="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-16">
+    <div>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+        {i18next.t("page.heading")}
+      </h1>
+      <p class="mt-4 max-w-prose text-lg text-base-content/70">
+        {i18next.t("page.intro")}
+      </p>
+    </div>
+  </section>
+</Layout>

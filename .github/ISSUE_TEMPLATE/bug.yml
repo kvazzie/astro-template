@@ -1,0 +1,46 @@
+name: Bug report
+description: Report a reproducible problem in the template or its workflow.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve this opinionated workflow. Please reduce the
+        problem to the template itself when possible.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Link a repository or list the smallest steps that reproduce the problem.
+      placeholder: pnpm create astro ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, Node, pnpm, and editor/Devenv details that matter.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I reproduced this from a clean install of the current main branch.
+          required: true
+        - label: I ran `pnpm check` and included the relevant output.
+          required: true

@@ -1,0 +1,6 @@
+**/.astro/**
+**/design.generated.css
+**/dist/**
+**/node_modules/**
+.devenv/**
+.direnv/**

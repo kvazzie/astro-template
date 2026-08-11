@@ -1,0 +1,15 @@
+{
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "page": {
+    "description": "A clean starting point for the next site.",
+    "heading": "Start building.",
+    "intro": "The project foundation is ready; the product decisions are yours.",
+    "title": "Home"
+  },
+  "site": {
+    "description": "An opinionated Astro project foundation.",
+    "name": "Astro project"
+  }
+}

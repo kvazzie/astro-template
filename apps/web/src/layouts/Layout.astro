@@ -1,0 +1,88 @@
+---
+import { ClientRouter } from "astro:transitions";
+import { getEntry } from "astro:content";
+import i18next from "i18next";
+
+import type { TranslationKey } from "#/i18n/resources";
+import { defaultLocale, supportedLocales } from "#/i18n/config";
+import "#/styles/app.css";
+
+interface Props {
+  title: TranslationKey;
+  description?: TranslationKey;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { title, description, image, canonical, noindex = false } = Astro.props;
+
+const siteEntry = await getEntry("site", "default");
+
+if (!siteEntry) {
+  throw new Error("Missing the required site/default content entry");
+}
+
+const locale = Astro.currentLocale ?? defaultLocale;
+const siteName = i18next.t(siteEntry.data.nameKey);
+const pageTitle = i18next.t(title);
+const fullTitle =
+  pageTitle === siteName ? pageTitle : `${pageTitle} | ${siteName}`;
+const pageDescription = i18next.t(
+  description ?? siteEntry.data.defaultDescriptionKey,
+);
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site);
+const imageUrl = image ? new URL(image, Astro.site) : undefined;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pageDescription} />
+    <meta name="theme-color" content="oklch(98% 0.005 250)" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      supportedLocales.map((supportedLocale) => (
+        <link
+          rel="alternate"
+          hreflang={supportedLocale}
+          href={
+            new URL(
+              supportedLocale === defaultLocale
+                ? Astro.url.pathname
+                : `/${supportedLocale}${Astro.url.pathname}`,
+              Astro.site,
+            )
+          }
+        />
+      ))
+    }
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta
+      name="twitter:card"
+      content={imageUrl ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+    <title>{fullTitle}</title>
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen bg-base-100 text-base-content antialiased">
+    <a class="skip-link" href="#main-content">
+      {i18next.t("a11y.skipToContent")}
+    </a>
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+  </body>
+</html>

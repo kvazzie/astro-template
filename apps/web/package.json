@@ -1,0 +1,26 @@
+{
+  "name": "@workspace/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build",
+    "check": "astro check",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@gutenye/astro-i18next": "^1.0.9",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.6",
+    "daisyui": "^5.6.10",
+    "i18next": "^26.3.6",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/ts-plugin": "^1.10.10",
+    "typescript": "~5.9.3"
+  }
+}
