@@ -83,8 +83,8 @@ Quality tooling lives at the workspace root:
 
 | Command                | Purpose                                       |
 | ---------------------- | --------------------------------------------- |
-| `pnpm dev`             | Generate/watch design tokens and start Astro  |
-| `pnpm build`           | Regenerate tokens and build every app         |
+| `pnpm dev`             | Watch design/i18n generation and start Astro  |
+| `pnpm build`           | Regenerate design/i18n and build every app    |
 | `pnpm check`           | Run the complete local and CI quality gate    |
 | `pnpm typecheck`       | Run Astro checks through Turbo                |
 | `pnpm test`            | Run Vitest once                               |
@@ -94,6 +94,8 @@ Quality tooling lives at the workspace root:
 | `pnpm fmt`             | Apply Prettier explicitly                     |
 | `pnpm design:check`    | Lint/export DESIGN.md and verify its contract |
 | `pnpm design:generate` | Write disposable generated design CSS         |
+| `pnpm i18n:check`      | Fail if generated i18next definitions drift   |
+| `pnpm i18n:generate`   | Generate i18next definitions from English     |
 
 Git hooks installed by Devenv are checks only. Pre-commit runs formatting, ESLint,
 and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
@@ -127,6 +129,11 @@ add a duplicate top-level `i18n` block to `astro.config.ts`.
 Interface copy and SEO metadata use typed i18next keys. Add English resources
 under `apps/web/src/i18n/locales/en/`. Authored prose belongs in localized content
 entries instead of becoming an unwieldy translation catalog.
+
+The official i18next CLI generates namespace definitions from the default locale.
+`pnpm dev` watches them, `pnpm build` regenerates them, and `pnpm check` fails if
+the committed definitions are stale. Run `pnpm i18n:generate` after changing the
+default-locale catalog when you are not using the development watcher.
 
 `@gutenye/astro-i18next` owns locale changes during route generation. Components
 must not call the global `changeLanguage()` themselves.

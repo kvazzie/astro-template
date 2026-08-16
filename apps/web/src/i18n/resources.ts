@@ -1,18 +1,8 @@
+import type { ParseKeys } from "i18next";
+
 import common from "./locales/en/common.json";
 
-export const defaultResources = { common } as const;
-
-type Join<Prefix extends string, Key extends string> = Prefix extends ""
-  ? Key
-  : `${Prefix}.${Key}`;
-
-type LeafKeys<Value, Prefix extends string = ""> = Value extends string
-  ? Prefix
-  : {
-      [Key in keyof Value & string]: LeafKeys<Value[Key], Join<Prefix, Key>>;
-    }[keyof Value & string];
-
-export type TranslationKey = LeafKeys<typeof common>;
+export type TranslationKey = ParseKeys<"common">;
 
 function collectKeys(
   value: Record<string, unknown>,

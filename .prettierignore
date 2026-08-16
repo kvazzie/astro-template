@@ -5,6 +5,7 @@
 .direnv
 .turbo
 apps/web/src/styles/design.generated.css
+apps/web/src/i18n/resources.generated.d.ts
 coverage
 devenv.lock
 pnpm-lock.yaml

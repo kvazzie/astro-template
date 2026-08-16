@@ -3,5 +3,9 @@ packages:
   - "packages/*"
 
 allowBuilds:
+  "@swc/core": true
   esbuild: true
   sharp: true
+
+catalog:
+  i18next-cli: "latest"

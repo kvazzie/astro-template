@@ -7,6 +7,9 @@
     "build": "astro build",
     "check": "astro check",
     "dev": "astro dev",
+    "i18n:check": "i18next-cli types --ci",
+    "i18n:generate": "i18next-cli types",
+    "i18n:watch": "i18next-cli types --watch",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -21,6 +24,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/ts-plugin": "^1.10.10",
+    "i18next-cli": "catalog:",
     "typescript": "~5.9.3",
     "vite": "^8.2.1"
   }
