@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
+import { PUBLIC_SITE_URL } from "astro:env/server";
 import i18next from "i18next";
 
 import type { TranslationKey } from "#/i18n/resources";
@@ -32,8 +33,14 @@ const fullTitle =
 const pageDescription = i18next.t(
   description ?? siteEntry.data.defaultDescriptionKey,
 );
-const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site);
-const imageUrl = image ? new URL(image, Astro.site) : undefined;
+const siteUrl = Astro.site;
+
+if (!siteUrl || siteUrl.href !== new URL(PUBLIC_SITE_URL).href) {
+  throw new Error("Astro.site must match the schema-backed PUBLIC_SITE_URL");
+}
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, siteUrl);
+const imageUrl = image ? new URL(image, siteUrl) : undefined;
 ---
 
 <!doctype html>
@@ -58,7 +65,7 @@ const imageUrl = image ? new URL(image, Astro.site) : undefined;
                 supportedLocales,
                 defaultLocale,
               ),
-              Astro.site,
+              siteUrl,
             )
           }
         />
