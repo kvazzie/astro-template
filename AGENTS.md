@@ -18,7 +18,7 @@ Use pnpm from the repository root.
 - `pnpm dev`: generate/watch design tokens and run the Astro app.
 - `pnpm check`: run the complete local/CI quality gate.
 - `pnpm test`: run Vitest once.
-- `pnpm format`, `pnpm lint:fix`, `pnpm stylelint:fix`: explicit fixes.
+- `pnpm fmt`, `pnpm lint:fix`, `pnpm stylelint:fix`: explicit fixes.
 - `pnpm design:generate`: regenerate disposable CSS from `DESIGN.md`.
 
 Do not hand-edit `apps/web/src/styles/design.generated.css`. It is ignored and is

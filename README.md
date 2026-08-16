@@ -90,12 +90,12 @@ Quality tooling lives at the workspace root:
 | `pnpm test`            | Run Vitest once                               |
 | `pnpm lint`            | Check JavaScript, TypeScript, and Astro       |
 | `pnpm stylelint`       | Check CSS and embedded styles                 |
-| `pnpm format:check`    | Check repository formatting                   |
-| `pnpm format`          | Apply Prettier explicitly                     |
+| `pnpm fmt:check`       | Check repository formatting                   |
+| `pnpm fmt`             | Apply Prettier explicitly                     |
 | `pnpm design:check`    | Lint/export DESIGN.md and verify its contract |
 | `pnpm design:generate` | Write disposable generated design CSS         |
 
-Git hooks installed by Devenv are checks only. Pre-commit runs format, ESLint,
+Git hooks installed by Devenv are checks only. Pre-commit runs formatting, ESLint,
 and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
 
 ## Design system
