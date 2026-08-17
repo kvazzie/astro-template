@@ -1,5 +1,5 @@
 **/.astro/**
-**/design.generated.css
+**/assets/.generated/**
 **/dist/**
 **/node_modules/**
 .devenv/**

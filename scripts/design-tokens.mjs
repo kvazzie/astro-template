@@ -20,7 +20,7 @@ const repositoryRoot = path.resolve(
 const designPath = path.join(repositoryRoot, "DESIGN.md");
 const outputPath = path.join(
   repositoryRoot,
-  "apps/web/src/styles/design.generated.css",
+  "apps/web/src/assets/.generated/design.css",
 );
 const designMdEntrypoint = fileURLToPath(
   import.meta.resolve("@google/design.md"),

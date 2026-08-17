@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "pnpm design:generate && pnpm i18n:generate && turbo run build",
-    "check": "pnpm design:generate && pnpm design:check && pnpm i18n:check && pnpm fmt:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm test && pnpm build",
+    "check": "pnpm design:generate && pnpm design:check && pnpm i18n:generate && pnpm i18n:check && pnpm fmt:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm test && pnpm build",
     "design:check": "node scripts/design-tokens.mjs check",
     "design:generate": "node scripts/design-tokens.mjs generate",
     "design:watch": "node scripts/design-tokens.mjs watch",
@@ -25,7 +25,7 @@
     "i18n:watch": "pnpm --filter @workspace/web i18n:watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "pnpm design:generate",
+    "prepare": "pnpm design:generate && pnpm i18n:generate",
     "stylelint": "stylelint \"apps/web/src/**/*.{astro,css,html,md,mdx}\"",
     "stylelint:fix": "pnpm stylelint --fix",
     "test": "vitest run",
@@ -63,6 +63,9 @@
       "allowedVersions": {
         "eslint-plugin-jsx-a11y>eslint": "10"
       }
+    },
+    "patchedDependencies": {
+      "@gutenye/astro-i18next@1.0.9": "patches/@gutenye__astro-i18next@1.0.9.patch"
     }
   }
 }

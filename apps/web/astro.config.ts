@@ -4,11 +4,8 @@ import i18next from "@gutenye/astro-i18next/integration";
 import { defineConfig, envField } from "astro/config";
 import { loadEnv } from "vite";
 
-import {
-  defaultLocale,
-  localeLanguageTags,
-  supportedLocales,
-} from "./src/i18n/config";
+import { astroI18nextOptions } from "./i18next.config";
+import { defaultLocale, localeLanguageTags } from "./src/i18n";
 
 const defaultSiteUrl = "https://example.com";
 const environment = loadEnv(
@@ -34,16 +31,7 @@ export default defineConfig({
   integrations: [
     // This integration injects Astro's native i18n config from `preload` and
     // `lng`; declaring a second top-level config creates duplicate routes.
-    i18next({
-      preload: [...supportedLocales],
-      lng: defaultLocale,
-      fallbackLng: defaultLocale,
-      defaultNS: "common",
-      ns: ["common"],
-      backend: {
-        loadPath: "src/i18n/locales/{{lng}}/{{ns}}.json",
-      },
-    }),
+    i18next(astroI18nextOptions),
     sitemap({
       i18n: {
         defaultLocale,

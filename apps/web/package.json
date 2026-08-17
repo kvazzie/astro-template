@@ -7,9 +7,9 @@
     "build": "astro build",
     "check": "astro check",
     "dev": "astro dev",
-    "i18n:check": "i18next-cli types --ci",
-    "i18n:generate": "i18next-cli types",
-    "i18n:watch": "i18next-cli types --watch",
+    "i18n:check": "i18next-cli extract --ci --sync-primary && i18next-cli types --ci",
+    "i18n:generate": "i18next-cli extract --sync-primary && i18next-cli types",
+    "i18n:watch": "i18next-cli extract --watch --sync-primary --with-types",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@astrojs/compiler": "^4.0.0",
     "@astrojs/check": "^0.9.9",
     "@astrojs/ts-plugin": "^1.10.10",
     "i18next-cli": "catalog:",
