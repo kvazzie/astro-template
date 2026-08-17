@@ -7,7 +7,7 @@ runtime catalog validation as a separate concern.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** in-progress
+**Status:** completed
 
 - [x] The generated default catalog lives under `src/assets/i18next/.en`, while tracked secondary catalogs remain formatted sibling assets.
 - [x] Generated design CSS and i18next declarations live under the asset and `src/@types` boundaries recommended by the project and i18next.
