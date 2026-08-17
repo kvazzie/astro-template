@@ -1,6 +1,6 @@
 import type { ParseKeys } from "i18next";
 
-import common from "./locales/en/common.json";
+import common from "#/assets/i18next/.en/common.json";
 
 export type TranslationKey = ParseKeys<"common">;
 

@@ -94,8 +94,8 @@ Quality tooling lives at the workspace root:
 | `pnpm fmt`             | Apply Prettier explicitly                     |
 | `pnpm design:check`    | Lint/export DESIGN.md and verify its contract |
 | `pnpm design:generate` | Write disposable generated design CSS         |
-| `pnpm i18n:check`      | Fail if generated i18next definitions drift   |
-| `pnpm i18n:generate`   | Generate i18next definitions from English     |
+| `pnpm i18n:check`      | Check extracted English and generated types   |
+| `pnpm i18n:generate`   | Extract English copy and generate types       |
 
 Git hooks installed by Devenv are checks only. Pre-commit runs formatting, ESLint,
 and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
@@ -104,7 +104,7 @@ and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
 
 `DESIGN.md` is the only source of design values. The pinned
 `@google/design.md` CLI validates it and exports a Tailwind CSS `@theme` file to
-`apps/web/src/styles/design.generated.css`. The generated file is intentionally
+`apps/web/src/assets/.generated/design.css`. The generated file is intentionally
 ignored: `prepare`, `dev`, `build`, and `check` materialize it when needed.
 
 `apps/web/src/styles/app.css` imports that file and contains stable light/dark
@@ -122,18 +122,24 @@ pnpm design:check
 
 Internationalization is enabled before the project needs a second language.
 English is the only initial locale and has no URL prefix. Add locales in
-`apps/web/src/i18n/config.ts`; the integration injects Astro's native i18n config
-from that definition, while i18next and sitemap consume the same values. Do not
-add a duplicate top-level `i18n` block to `astro.config.ts`.
+`apps/web/src/i18n/index.ts`; the integration injects Astro's native i18n config
+from that definition, while i18next and sitemap consume the same values. All
+i18next-specific extraction, type-generation, integration, and backend options
+live in `apps/web/i18next.config.ts`. Do not add a duplicate top-level `i18n`
+block to `astro.config.ts`.
 
-Interface copy and SEO metadata use typed i18next keys. Add English resources
-under `apps/web/src/i18n/locales/en/`. Authored prose belongs in localized content
-entries instead of becoming an unwieldy translation catalog.
+Interface copy and SEO metadata use typed i18next keys. English copy belongs in
+literal calls such as `t("page.title", "Home")`; the CLI extracts it into the
+ignored `apps/web/src/assets/i18next/.en/` directory that it owns. Future
+authored secondary catalogs live in sibling locale directories such as
+`apps/web/src/assets/i18next/de/` and remain tracked and formatted. Authored
+prose belongs in localized content entries instead of becoming an unwieldy
+translation catalog.
 
-The official i18next CLI generates namespace definitions from the default locale.
-`pnpm dev` watches them, `pnpm build` regenerates them, and `pnpm check` fails if
-the committed definitions are stale. Run `pnpm i18n:generate` after changing the
-default-locale catalog when you are not using the development watcher.
+The official i18next CLI generates disposable declarations under
+`apps/web/src/@types/`. Never edit them. `prepare`, `dev`, `build`, and `check`
+materialize the generated catalog and declarations; `pnpm dev` then watches
+source translation calls for changes.
 
 `@gutenye/astro-i18next` owns locale changes during route generation. Components
 must not call the global `changeLanguage()` themselves.
@@ -144,8 +150,8 @@ The `site` content collection is a real singleton used by the layout. Its schema
 validates translation-key references. Add project-specific collections only when
 their content model is known.
 
-`Layout.astro` accepts a typed title key plus optional description key, image,
-canonical path, and `noindex`. It supplies canonical, Open Graph, Twitter,
+`Layout.astro` accepts translated title and optional description strings plus an
+image, canonical path, and `noindex`. It supplies canonical, Open Graph, Twitter,
 alternate-language, accessibility, and page-transition boilerplate. `robots.txt`
 and sitemap URLs derive from the same `Astro.site` value.
 

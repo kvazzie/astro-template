@@ -20,9 +20,10 @@ Use pnpm from the repository root.
 - `pnpm test`: run Vitest once.
 - `pnpm fmt`, `pnpm lint:fix`, `pnpm stylelint:fix`: explicit fixes.
 - `pnpm design:generate`: regenerate disposable CSS from `DESIGN.md`.
-- `pnpm i18n:generate`: regenerate committed i18next definitions from the default locale.
+- `pnpm i18n:generate`: extract the disposable default catalog and regenerate i18next definitions.
 
-Do not hand-edit `apps/web/src/styles/design.generated.css`. It is ignored and is
+Do not hand-edit generated files under `apps/web/src/assets/.generated`,
+`apps/web/src/assets/i18next/.en`, or `apps/web/src/@types`. They are ignored and
 created by lifecycle/build commands.
 
 ## Architecture rules
@@ -36,8 +37,10 @@ created by lifecycle/build commands.
   it with a top-level `i18n` block in `astro.config.ts`.
 - User-interface copy, validation messages, and SEO metadata use typed i18n keys.
   Authored long-form content belongs in localized content entries.
-- Add locale definitions once in `src/i18n/config.ts`; Astro, i18next, sitemap,
-  and routes must consume that shared definition.
+- Add framework locale definitions once in `src/i18n/index.ts`; Astro, i18next,
+  sitemap, and routes must consume that shared definition. Keep i18next-specific
+  extraction, type generation, integration, and backend options in
+  `i18next.config.ts`.
 - Use Astro content collections for structured authored content and validate
   cross-cutting identifiers such as translation keys at the schema boundary.
 - Browser scripts under `ClientRouter` must be idempotent and initialize through

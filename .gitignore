@@ -8,8 +8,11 @@ dist/
 coverage/
 .turbo/
 
-# Generated design artifacts
-apps/web/src/styles/design.generated.css
+# Generated source artifacts
+apps/web/src/@types/i18next.d.ts
+apps/web/src/@types/resources.d.ts
+apps/web/src/assets/.generated/
+apps/web/src/assets/i18next/.en/
 
 # Local environment
 .devenv/

@@ -4,8 +4,10 @@
 .devenv
 .direnv
 .turbo
-apps/web/src/styles/design.generated.css
-apps/web/src/i18n/resources.generated.d.ts
+apps/web/src/@types/i18next.d.ts
+apps/web/src/@types/resources.d.ts
+apps/web/src/assets/.generated
+apps/web/src/assets/i18next/.en
 coverage
 devenv.lock
 pnpm-lock.yaml

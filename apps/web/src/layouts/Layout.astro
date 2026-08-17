@@ -5,13 +5,13 @@ import { PUBLIC_SITE_URL } from "astro:env/server";
 import i18next from "i18next";
 
 import type { TranslationKey } from "#/i18n/resources";
-import { defaultLocale, supportedLocales } from "#/i18n/config";
+import { defaultLocale, supportedLocales } from "#/i18n";
 import { localizePathname } from "#/i18n/pathname";
 import "#/styles/app.css";
 
 interface Props {
-  title: TranslationKey;
-  description?: TranslationKey;
+  title: string;
+  description?: string;
   image?: string;
   canonical?: string;
   noindex?: boolean;
@@ -26,13 +26,27 @@ if (!siteEntry) {
 }
 
 const locale = Astro.currentLocale ?? defaultLocale;
-const siteName = i18next.t(siteEntry.data.nameKey);
-const pageTitle = i18next.t(title);
+const translateSiteMetadata = (key: TranslationKey) => {
+  switch (key) {
+    case "site.name":
+      return i18next.t("site.name", "Astro project");
+    case "site.description":
+      return i18next.t(
+        "site.description",
+        "An opinionated Astro project foundation.",
+      );
+    default:
+      throw new Error(
+        `Expected a site metadata translation key, received ${key}`,
+      );
+  }
+};
+const siteName = translateSiteMetadata(siteEntry.data.nameKey);
+const pageTitle = title;
 const fullTitle =
   pageTitle === siteName ? pageTitle : `${pageTitle} | ${siteName}`;
-const pageDescription = i18next.t(
-  description ?? siteEntry.data.defaultDescriptionKey,
-);
+const pageDescription =
+  description ?? translateSiteMetadata(siteEntry.data.defaultDescriptionKey);
 const siteUrl = Astro.site;
 
 if (!siteUrl || siteUrl.href !== new URL(PUBLIC_SITE_URL).href) {
@@ -89,7 +103,7 @@ const imageUrl = image ? new URL(image, siteUrl) : undefined;
   </head>
   <body class="min-h-screen bg-base-100 text-base-content antialiased">
     <a class="skip-link" href="#main-content">
-      {i18next.t("a11y.skipToContent")}
+      {i18next.t("a11y.skipToContent", "Skip to content")}
     </a>
     <main id="main-content" tabindex="-1">
       <slot />

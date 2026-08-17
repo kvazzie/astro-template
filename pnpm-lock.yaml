@@ -114,6 +114,9 @@ importers:
       '@astrojs/check':
         specifier: ^0.9.9
         version: 0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@5.9.3)
+      '@astrojs/compiler':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@astrojs/ts-plugin':
         specifier: ^1.10.10
         version: 1.10.10
