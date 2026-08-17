@@ -132,7 +132,7 @@ Interface copy and SEO metadata use typed i18next keys. English copy belongs in
 literal calls such as `t("page.title", "Home")`; the CLI extracts it into the
 ignored `apps/web/src/assets/i18next/.en/` directory that it owns. Future
 authored secondary catalogs live in sibling locale directories such as
-`apps/web/src/assets/i18next/de/` and remain tracked and formatted. Authored
+`apps/web/src/assets/i18next/ru/` and remain tracked and formatted. Authored
 prose belongs in localized content entries instead of becoming an unwieldy
 translation catalog.
 

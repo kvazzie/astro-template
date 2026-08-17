@@ -1,6 +1,7 @@
 import { z } from "astro/zod";
+import type { ParseKeys } from "i18next";
 
-import type { TranslationKey } from "#/i18n/resources";
+type TranslationKey = ParseKeys<"common">;
 
 export const siteMetadataKeys = {
   name: "site.name",

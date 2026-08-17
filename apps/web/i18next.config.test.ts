@@ -9,6 +9,6 @@ describe("i18next runtime catalog paths", () => {
     expect(loadPath("en", "common")).toBe(
       "src/assets/i18next/.en/common.json",
     );
-    expect(loadPath("de", "common")).toBe("src/assets/i18next/de/common.json");
+    expect(loadPath("ru", "common")).toBe("src/assets/i18next/ru/common.json");
   });
 });

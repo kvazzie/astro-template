@@ -7,7 +7,7 @@ runtime catalog validation as a separate concern.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** completed
+**Status:** in-progress
 
 - [x] The generated default catalog lives under `src/assets/i18next/.en`, while tracked secondary catalogs remain formatted sibling assets.
 - [x] Generated design CSS and i18next declarations live under the asset and `src/@types` boundaries recommended by the project and i18next.
@@ -16,3 +16,4 @@ runtime catalog validation as a separate concern.
 - [x] i18next CLI, Astro extraction, runtime integration, and backend paths are configured in `i18next.config.ts`; framework locale state remains in `src/i18n/index.ts`.
 - [x] Generation and watch commands participate in prepare, check, build, and development lifecycles from a clean checkout.
 - [x] Invalid translation keys still fail at the existing schema boundary, pathname behavior remains assigned to ticket 12, and the complete quality command passes.
+- [x] Follow-up work records how to replace the temporary integration patch with an actively maintained Astro integration.
