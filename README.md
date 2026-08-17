@@ -142,7 +142,9 @@ materialize the generated catalog and declarations; `pnpm dev` then watches
 source translation calls for changes.
 
 `@gutenye/astro-i18next` owns locale changes during route generation. Components
-must not call the global `changeLanguage()` themselves.
+must not call the global `changeLanguage()` themselves. A pinned pnpm patch lets
+its hot-update hook follow the filesystem backend's function-valued locale path;
+remove that patch once the integration supports conditional catalog paths.
 
 ## Content and SEO
 

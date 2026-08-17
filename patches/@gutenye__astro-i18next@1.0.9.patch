@@ -1,0 +1,37 @@
+diff --git a/build/integration/createConfigSetup.js b/build/integration/createConfigSetup.js
+index 339168776dc2faec4eb4cc70b63ca9f5b45353bd..a75c680f403194324e582566af1d686feb1ecc38 100644
+--- a/build/integration/createConfigSetup.js
++++ b/build/integration/createConfigSetup.js
+@@ -33,13 +33,28 @@ export function createConfigSetup(initOptions) {
+     };
+ }
+ function handleHotUpdate(options) {
+-    invariant(typeof options.backend?.loadPath === 'string', 'loadPath is not a string');
+-    const pattern = options.backend.loadPath.replace(/\{\{(\w+)\}\}/g, (_, name) => `(?<${name}>[^/]+)`);
+-    const regex = new RegExp(`${pattern}$`);
++    const loadPath = options.backend?.loadPath;
++    const resources = typeof loadPath === 'function'
++        ? options.preload.flatMap((lng) => {
++            const namespaces = Array.isArray(options.ns)
++                ? options.ns
++                : [options.ns ?? options.defaultNS ?? 'translation'];
++            return namespaces.map((ns) => ({ lng, ns, path: loadPath(lng, ns) }));
++        })
++        : undefined;
++    invariant(typeof loadPath === 'string' || resources, 'loadPath is not a string or function');
++    const regex = typeof loadPath === 'string'
++        ? new RegExp(`${loadPath.replace(/\{\{(\w+)\}\}/g, (_, name) => `(?<${name}>[^/]+)`)}$`)
++        : undefined;
+     return {
+         name: 'i18next-handle-hot-update',
+         handleHotUpdate({ file }) {
+-            const match = regex.exec(file);
++            const resource = resources?.find(({ path }) => file.endsWith(path));
++            if (resource) {
++                i18next.reloadResources([resource.lng], [resource.ns]);
++                return;
++            }
++            const match = regex?.exec(file);
+             if (match?.groups) {
+                 const { lng, ns } = match.groups;
+                 i18next.reloadResources(lng ? [lng] : undefined, ns ? [ns] : undefined);

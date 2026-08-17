@@ -63,6 +63,9 @@
       "allowedVersions": {
         "eslint-plugin-jsx-a11y>eslint": "10"
       }
+    },
+    "patchedDependencies": {
+      "@gutenye/astro-i18next@1.0.9": "patches/@gutenye__astro-i18next@1.0.9.patch"
     }
   }
 }

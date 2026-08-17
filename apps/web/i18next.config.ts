@@ -6,6 +6,13 @@ import { defaultLocale, supportedLocales } from "./src/i18n";
 
 const defaultCatalogDirectory = `src/assets/i18next/.${defaultLocale}`;
 
+function translationLoadPath(language: string, namespace: string) {
+  const localeDirectory =
+    language === defaultLocale ? `.${language}` : language;
+
+  return `src/assets/i18next/${localeDirectory}/${namespace}.json`;
+}
+
 const astroPlugin = {
   name: "astro",
   async onLoad(code, filePath) {
@@ -24,9 +31,7 @@ export const astroI18nextOptions = {
   defaultNS: "common",
   ns: ["common"],
   backend: {
-    // The integration requires a string template for its hot-update matcher.
-    // The only configured locale is the CLI-owned default catalog.
-    loadPath: "src/assets/i18next/.{{lng}}/{{ns}}.json",
+    loadPath: translationLoadPath,
   },
 } satisfies Parameters<typeof createIntegration>[0];
 

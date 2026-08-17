@@ -4,7 +4,7 @@ import { getEntry } from "astro:content";
 import { PUBLIC_SITE_URL } from "astro:env/server";
 import i18next from "i18next";
 
-import type { TranslationKey } from "#/i18n/resources";
+import type { SiteMetadataKey } from "#/content/site/schema";
 import { defaultLocale, supportedLocales } from "#/i18n";
 import { localizePathname } from "#/i18n/pathname";
 import "#/styles/app.css";
@@ -26,7 +26,7 @@ if (!siteEntry) {
 }
 
 const locale = Astro.currentLocale ?? defaultLocale;
-const translateSiteMetadata = (key: TranslationKey) => {
+const translateSiteMetadata = (key: SiteMetadataKey) => {
   switch (key) {
     case "site.name":
       return i18next.t("site.name", "Astro project");
