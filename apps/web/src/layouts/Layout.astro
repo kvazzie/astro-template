@@ -4,9 +4,7 @@ import { getEntry } from "astro:content";
 import { PUBLIC_SITE_URL } from "astro:env/server";
 import i18next from "i18next";
 
-import type { SiteMetadataKey } from "#/content/site/schema";
-import { defaultLocale, supportedLocales } from "#/i18n";
-import { localizePathname } from "#/i18n/pathname";
+import type * as siteContent from "#/content/site";
 import "#/styles/app.css";
 
 interface Props {
@@ -25,8 +23,8 @@ if (!siteEntry) {
   throw new Error("Missing the required site/default content entry");
 }
 
-const locale = Astro.currentLocale ?? defaultLocale;
-const translateSiteMetadata = (key: SiteMetadataKey) => {
+const locale = Astro.currentLocale ?? i18n.defaultLocale;
+const translateSiteMetadata = (key: siteContent.SiteMetadataKey) => {
   switch (key) {
     case "site.name":
       return i18next.t("site.name", "Astro project");
@@ -67,17 +65,17 @@ const imageUrl = image ? new URL(image, siteUrl) : undefined;
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     {
-      supportedLocales.map((supportedLocale) => (
+      i18n.supportedLocales.map((supportedLocale) => (
         <link
           rel="alternate"
           hreflang={supportedLocale}
           href={
             new URL(
-              localizePathname(
+              i18n.localizePathname(
                 Astro.url.pathname,
                 supportedLocale,
-                supportedLocales,
-                defaultLocale,
+                i18n.supportedLocales,
+                i18n.defaultLocale,
               ),
               siteUrl,
             )

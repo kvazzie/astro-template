@@ -2,10 +2,12 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import i18next from "@gutenye/astro-i18next/integration";
 import { defineConfig, envField } from "astro/config";
+import autoImport from "unplugin-auto-import/astro";
 import { loadEnv } from "vite";
 
-import { astroI18nextOptions } from "./i18next.config";
-import { defaultLocale, localeLanguageTags } from "./src/i18n";
+import * as i18nextConfig from "./i18next.config";
+import * as internalNamespaces from "./internal-namespaces.unimport";
+import * as i18n from "./src/i18n";
 
 const defaultSiteUrl = "https://example.com";
 const environment = loadEnv(
@@ -29,13 +31,18 @@ export default defineConfig({
     },
   },
   integrations: [
+    autoImport(
+      internalNamespaces.createInternalNamespaceAutoImportOptions(
+        "src/@types/internal-namespaces.d.ts",
+      ),
+    ),
     // This integration injects Astro's native i18n config from `preload` and
     // `lng`; declaring a second top-level config creates duplicate routes.
-    i18next(astroI18nextOptions),
+    i18next(i18nextConfig.astroI18nextOptions),
     sitemap({
       i18n: {
-        defaultLocale,
-        locales: localeLanguageTags,
+        defaultLocale: i18n.defaultLocale,
+        locales: i18n.localeLanguageTags,
       },
     }),
   ],

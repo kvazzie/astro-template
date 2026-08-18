@@ -7,3 +7,5 @@ export const defaultLocale = "en" satisfies SupportedLocale;
 export const localeLanguageTags = {
   en: "en-US",
 } as const satisfies Record<SupportedLocale, string>;
+
+export { localizePathname } from "./pathname";

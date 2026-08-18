@@ -1,11 +1,11 @@
 import { defineCollection } from "astro:content";
 import { file } from "astro/loaders";
 
-import { siteSchema } from "#/content/site/schema";
+import * as siteContent from "./content/site";
 
 const site = defineCollection({
   loader: file("src/content/site/default.json"),
-  schema: siteSchema,
+  schema: siteContent.siteSchema,
 });
 
 export const collections = { site };

@@ -1,22 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import { siteMetadataKeys, siteSchema } from "./schema";
-
 describe("site content schema", () => {
   it("accepts the metadata translation keys owned by the site entry", () => {
     expect(
-      siteSchema.safeParse({
-        nameKey: siteMetadataKeys.name,
-        defaultDescriptionKey: siteMetadataKeys.defaultDescription,
+      siteContent.siteSchema.safeParse({
+        nameKey: siteContent.siteMetadataKeys.name,
+        defaultDescriptionKey: siteContent.siteMetadataKeys.defaultDescription,
       }).success,
     ).toBe(true);
   });
 
   it("rejects a catalog key outside the site metadata boundary", () => {
     expect(
-      siteSchema.safeParse({
+      siteContent.siteSchema.safeParse({
         nameKey: "page.title",
-        defaultDescriptionKey: siteMetadataKeys.defaultDescription,
+        defaultDescriptionKey: siteContent.siteMetadataKeys.defaultDescription,
       }).success,
     ).toBe(false);
   });

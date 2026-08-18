@@ -10,6 +10,7 @@ coverage/
 
 # Generated source artifacts
 apps/web/src/@types/i18next.d.ts
+apps/web/src/@types/internal-namespaces.d.ts
 apps/web/src/@types/resources.d.ts
 apps/web/src/assets/.generated/
 apps/web/src/assets/i18next/.en/
