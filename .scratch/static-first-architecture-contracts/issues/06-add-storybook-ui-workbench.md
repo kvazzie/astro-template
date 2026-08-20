@@ -6,7 +6,7 @@ blanket requirement for component unit tests.
 
 **Blocked by:** 04 — Enforce the module import convention; 05 — Export component contracts explicitly.
 
-**Status:** ready-for-agent
+**Status:** completed
 
 - [x] Storybook development and static builds render Astro UI with the project's real styling and design configuration.
 - [x] A private smoke fixture proves the workbench without adding demo UI to the generated application.
