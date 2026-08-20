@@ -9,6 +9,24 @@ const eslint = new ESLint({
 });
 
 describe("module import convention", () => {
+  it("allows public Astro component contracts", async () => {
+    const [result] = await eslint.lintText(
+      `---
+export interface Props {
+  title: string;
+}
+
+export const componentName = "example";
+---
+<h1>{Astro.props.title}</h1>`,
+      { filePath: "apps/web/src/layouts/Layout.astro" },
+    );
+
+    expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
+      [],
+    );
+  });
+
   it("rejects explicit bound imports of registered private modules in application source", async () => {
     const [result] = await eslint.lintText(
       'import { defaultLocale } from "#/i18n";\nvoid defaultLocale;',
