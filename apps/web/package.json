@@ -10,7 +10,9 @@
     "i18n:check": "i18next-cli extract --ci --sync-primary && i18next-cli types --ci",
     "i18n:generate": "i18next-cli extract --sync-primary && i18next-cli types",
     "i18n:watch": "i18next-cli extract --watch --sync-primary --with-types",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "storybook": "storybook dev -p 6006 --disable-telemetry",
+    "storybook:build": "storybook build --disable-telemetry"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -25,7 +27,10 @@
     "@astrojs/compiler": "^4.0.0",
     "@astrojs/check": "^0.9.9",
     "@astrojs/ts-plugin": "^1.10.10",
+    "@storybook-astro/framework": "^1.10.0",
+    "@storybook/builder-vite": "^10.2.9",
     "i18next-cli": "catalog:",
+    "storybook": "^10.2.9",
     "typescript": "~5.9.3",
     "vite": "^8.2.1"
   }

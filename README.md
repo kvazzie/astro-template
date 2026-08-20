@@ -87,6 +87,8 @@ Quality tooling lives at the workspace root:
 | `pnpm build`           | Regenerate design/i18n and build every app    |
 | `pnpm check`           | Run the complete local and CI quality gate    |
 | `pnpm typecheck`       | Run Astro checks through Turbo                |
+| `pnpm storybook`       | Run the Astro UI component workbench          |
+| `pnpm storybook:build` | Build the static UI component workbench       |
 | `pnpm test`            | Run Vitest once                               |
 | `pnpm lint`            | Check JavaScript, TypeScript, and Astro       |
 | `pnpm stylelint`       | Check CSS and embedded styles                 |
@@ -145,6 +147,24 @@ source translation calls for changes.
 must not call the global `changeLanguage()` themselves. A pinned pnpm patch lets
 its hot-update hook follow the filesystem backend's function-valued locale path;
 remove that patch once the integration supports conditional catalog paths.
+
+## Component workbench
+
+Storybook is the executable workbench for pure UI components. Put each
+`*.stories.ts` file beside the component it describes under `src/components`.
+Stories pass translated copy, the active locale, and values derived from the
+environment through args. The component stays independent of i18next, Astro
+routing, content collections, and environment modules.
+
+The workbench imports the application stylesheet and uses the same Astro and
+Tailwind configuration as production. Run `pnpm storybook` while building UI.
+The complete `pnpm check` command builds the static workbench to verify every
+story on a clean checkout.
+
+Do not add stories for layouts or pages. Those depend on Astro's rendering
+environment and belong in colocated rendered tests. A markup-only UI component
+does not need a Vitest file unless it gains non-visual behavior that a story
+cannot verify.
 
 ## Content and SEO
 

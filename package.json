@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "pnpm design:generate && pnpm i18n:generate && turbo run build",
-    "check": "pnpm design:generate && pnpm design:check && pnpm i18n:generate && pnpm i18n:check && pnpm fmt:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm test && pnpm build",
+    "check": "pnpm design:generate && pnpm design:check && pnpm i18n:generate && pnpm i18n:check && pnpm fmt:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm storybook:build && pnpm test && pnpm build",
     "design:check": "node scripts/design-tokens.mjs check",
     "design:generate": "node scripts/design-tokens.mjs generate",
     "design:watch": "node scripts/design-tokens.mjs watch",
@@ -28,6 +28,8 @@
     "prepare": "pnpm design:generate && pnpm i18n:generate",
     "stylelint": "stylelint \"apps/web/src/**/*.{astro,css,html,md,mdx}\"",
     "stylelint:fix": "pnpm stylelint --fix",
+    "storybook": "pnpm design:generate && pnpm --filter @workspace/web storybook",
+    "storybook:build": "pnpm design:generate && pnpm --filter @workspace/web storybook:build",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "turbo run check"
