@@ -31,6 +31,9 @@ created by lifecycle/build commands.
 - Keep `apps/web` static until a product requirement chooses an adapter.
 - Use the `#/*` alias for cross-directory imports inside `apps/web/src`.
   Colocated modules and bootstrap configuration may use relative imports.
+- Every Astro component and layout exports its `Props` type and any public
+  constant declared in frontmatter. `astro/no-exports-from-components` is
+  intentionally disabled for that contract.
 - Treat `@gutenye/astro-i18next` as the locale lifecycle owner. Do not call the
   global `changeLanguage()` from components. The integration injects Astro's
   native i18n config from the shared `preload` and `lng` values; do not duplicate

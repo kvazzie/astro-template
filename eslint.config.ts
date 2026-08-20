@@ -336,6 +336,10 @@ export default defineConfig(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    rules: {
+      // Components publish their Props type and public constants as contracts.
+      "astro/no-exports-from-components": "off",
+    },
   },
   eslintConfigPrettier,
 );

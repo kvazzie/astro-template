@@ -3,6 +3,8 @@ import i18next from "i18next";
 
 import Layout from "#/layouts/Layout.astro";
 
+export interface Props {}
+
 export { getStaticPaths } from "@gutenye/astro-i18next";
 
 const title = i18next.t("page.title", "Home");
