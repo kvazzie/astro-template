@@ -6,6 +6,7 @@ node_modules/
 .astro/
 dist/
 coverage/
+storybook-static/
 .turbo/
 
 # Generated source artifacts

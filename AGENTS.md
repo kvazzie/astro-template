@@ -18,6 +18,8 @@ Use pnpm from the repository root.
 - `pnpm dev`: generate/watch design tokens and i18next definitions, then run the Astro app.
 - `pnpm check`: run the complete local/CI quality gate.
 - `pnpm test`: run Vitest once.
+- `pnpm storybook`: generate design tokens and run the Astro UI workbench.
+- `pnpm storybook:build`: generate design tokens and build the static UI workbench.
 - `pnpm fmt`, `pnpm lint:fix`, `pnpm stylelint:fix`: explicit fixes.
 - `pnpm design:generate`: regenerate disposable CSS from `DESIGN.md`.
 - `pnpm i18n:generate`: extract the disposable default catalog and regenerate i18next definitions.
@@ -46,6 +48,10 @@ created by lifecycle/build commands.
   `i18next.config.ts`.
 - Use Astro content collections for structured authored content and validate
   cross-cutting identifiers such as translation keys at the schema boundary.
+- Keep Storybook stories beside pure UI components. Pass translated copy,
+  locale, and environment-derived values through story args. Layouts and pages
+  belong in rendered Astro tests, not Storybook. Markup-only UI components do
+  not need matching Vitest files.
 - Browser scripts under `ClientRouter` must be idempotent and initialize through
   Astro lifecycle events, not only `DOMContentLoaded`.
 - Preserve semantic HTML, visible focus, reduced motion, and WCAG AA contrast.

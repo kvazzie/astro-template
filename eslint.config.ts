@@ -250,6 +250,7 @@ export default defineConfig(
       "**/.astro/**",
       "**/dist/**",
       "**/node_modules/**",
+      "**/storybook-static/**",
       "**/@types/i18next.d.ts",
       "**/@types/internal-namespaces.d.ts",
       "**/@types/resources.d.ts",
