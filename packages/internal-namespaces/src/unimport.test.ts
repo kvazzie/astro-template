@@ -1,25 +1,61 @@
 import { transform } from "@astrojs/compiler";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import autoImport from "unplugin-auto-import/vite";
 import { build, createServer, type Plugin } from "vite";
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import * as internalNamespaces from "./internal-namespaces.unimport";
+import { defineInternalNamespaces } from "./index.ts";
 
-describe("internal namespace transform", () => {
+describe("internal namespace Unimport integration", () => {
+  let internalNamespaces: ReturnType<typeof defineInternalNamespaces>;
+  let packageDirectory: string;
+
+  beforeAll(() => {
+    packageDirectory = mkdtempSync(
+      join(tmpdir(), "internal-namespace-unimport-package-"),
+    );
+
+    for (const entrypoint of ["i18n", "content/site"]) {
+      const entrypointDirectory = join(packageDirectory, "src", entrypoint);
+      mkdirSync(entrypointDirectory, { recursive: true });
+      writeFileSync(join(entrypointDirectory, "index.ts"), "export {};\n");
+    }
+
+    internalNamespaces = defineInternalNamespaces(
+      [
+        { namespace: "i18n", from: "#/i18n" },
+        { namespace: "siteContent", from: "#/content/site" },
+      ],
+      {
+        consumerScope: {
+          bootstrapFiles: ["apps/web/src/content.config.ts"],
+          sourceDirectory: "apps/web/src",
+          sourceExtensions: ["js", "ts", "tsx", "astro"],
+        },
+        packageRoot: pathToFileURL(`${packageDirectory}/`),
+      },
+    );
+  });
+
+  afterAll(() => {
+    rmSync(packageDirectory, { force: true, recursive: true });
+  });
+
   it("injects a true namespace import for a referenced private module", async () => {
-    const transformed =
-      await internalNamespaces.injectInternalNamespaceImports(
-        'import i18next from "i18next";\nconst locale = i18n.defaultLocale;',
-        "/repo/apps/web/src/consumer.ts",
-      );
+    const transformed = await internalNamespaces.injectImports(
+      'import i18next from "i18next";\nconst locale = i18n.defaultLocale;',
+      "/repo/apps/web/src/consumer.ts",
+    );
 
     expect(transformed).toContain("import * as i18n from '#/i18n';");
     expect(transformed).toContain('import i18next from "i18next";');
   });
 
   it("declares the implicit namespace value", async () => {
-    const declarations =
-      await internalNamespaces.generateInternalNamespaceDeclarations();
+    const declarations = await internalNamespaces.generateDeclarations();
 
     expect(declarations).toContain(
       "const siteContent: typeof import('#/content/site')",
@@ -36,11 +72,10 @@ type MetadataKey = siteContent.SiteMetadataKey;
 ---
 <span>{locale}</span>
 `);
-    const transformed =
-      await internalNamespaces.injectInternalNamespaceImports(
-        compiled.code,
-        "/repo/apps/web/src/consumer.astro",
-      );
+    const transformed = await internalNamespaces.injectImports(
+      compiled.code,
+      "/repo/apps/web/src/consumer.astro",
+    );
 
     expect(transformed).toContain("import * as i18n from '#/i18n';");
     expect(transformed).not.toContain(
@@ -52,16 +87,13 @@ type MetadataKey = siteContent.SiteMetadataKey;
     const source = "const locale = i18n.defaultLocale;";
 
     await expect(
-      internalNamespaces.injectInternalNamespaceImports(
+      internalNamespaces.injectImports(
         source,
         "/repo/apps/web/src/content.config.ts",
       ),
     ).resolves.toBe(source);
     await expect(
-      internalNamespaces.injectInternalNamespaceImports(
-        source,
-        "/repo/scripts/example.ts",
-      ),
+      internalNamespaces.injectImports(source, "/repo/scripts/example.ts"),
     ).resolves.toBe(source);
   });
 
@@ -94,9 +126,7 @@ type MetadataKey = siteContent.SiteMetadataKey;
       configFile: false,
       logLevel: "silent",
       plugins: [
-        autoImport(
-          internalNamespaces.createInternalNamespaceAutoImportOptions(),
-        ),
+        autoImport(internalNamespaces.createAutoImportOptions()),
         virtualModulesPlugin,
       ],
     });
@@ -132,9 +162,7 @@ type MetadataKey = siteContent.SiteMetadataKey;
       configFile: false,
       logLevel: "silent",
       plugins: [
-        autoImport(
-          internalNamespaces.createInternalNamespaceAutoImportOptions(),
-        ),
+        autoImport(internalNamespaces.createAutoImportOptions()),
         virtualEntryPlugin,
       ],
       server: { middlewareMode: true },

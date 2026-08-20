@@ -6,7 +6,7 @@ import autoImport from "unplugin-auto-import/astro";
 import { loadEnv } from "vite";
 
 import * as i18nextConfig from "./i18next.config";
-import * as internalNamespaces from "./internal-namespaces.unimport";
+import * as internalNamespaces from "./internal-namespaces";
 import * as i18n from "./src/i18n";
 
 const defaultSiteUrl = "https://example.com";
@@ -32,7 +32,7 @@ export default defineConfig({
   },
   integrations: [
     autoImport(
-      internalNamespaces.createInternalNamespaceAutoImportOptions(
+      internalNamespaces.webInternalNamespaces.createAutoImportOptions(
         "src/@types/internal-namespaces.d.ts",
       ),
     ),

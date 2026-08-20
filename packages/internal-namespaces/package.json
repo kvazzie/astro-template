@@ -1,0 +1,23 @@
+{
+  "name": "@workspace/internal-namespaces",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "unimport": "^6.4.0",
+    "unplugin-auto-import": "^21.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/compiler": "^4.0.0",
+    "@types/node": "^24.3.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  }
+}

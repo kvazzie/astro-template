@@ -9,19 +9,22 @@ import tseslint from "typescript-eslint";
 
 import {
   webApplicationGlobals,
-  webInternalNamespaceConsumerScope,
   webInternalNamespaces,
 } from "./apps/web/internal-namespaces.ts";
 
+const webInternalNamespaceConsumerScope = webInternalNamespaces.consumerScope;
+const webInternalNamespaceDefinitions = webInternalNamespaces.namespaces;
 const internalNamespaceGlobals = Object.fromEntries(
-  webInternalNamespaces.map(({ namespace }) => [namespace, "readonly"]),
+  webInternalNamespaceDefinitions.map(({ namespace }) => [
+    namespace,
+    "readonly",
+  ]),
 );
-const unavailableImplicitNamespaceRestrictions = webInternalNamespaces.map(
-  ({ namespace }) => ({
+const unavailableImplicitNamespaceRestrictions =
+  webInternalNamespaceDefinitions.map(({ namespace }) => ({
     message: `The implicit "${namespace}" namespace is unavailable outside the application transform scope; import it explicitly.`,
     name: namespace,
-  }),
-);
+  }));
 const namedImportOnlyModules = [
   "astro",
   "astro/config",
@@ -58,33 +61,37 @@ const astroComponentImportRestrictions = [
       'ImportDeclaration[source.value=/\\.astro$/] > ImportSpecifier[imported.name="default"]',
   },
 ];
-const registeredPrivateModuleRestrictions = webInternalNamespaces.map(
-  ({ namespace, from }) => ({
+const registeredPrivateModuleRestrictions =
+  webInternalNamespaceDefinitions.map(({ namespace, from }) => ({
     allowTypeImports: true,
     message: `Use the implicit "${namespace}" namespace instead of importing "${from}" in application source.`,
     name: from,
-  }),
-);
-const registeredPrivateSubpathRestrictions = webInternalNamespaces.map(
-  ({ namespace, from }) => ({
+  }));
+const registeredPrivateSubpathRestrictions =
+  webInternalNamespaceDefinitions.map(({ namespace, from }) => ({
     regex: `^${from.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}/`,
     message: `Use the implicit "${namespace}" namespace instead of importing a private subpath of "${from}" in application source.`,
-  }),
-);
+  }));
 const internalNamespaceNames = new Set(
-  webInternalNamespaces.map(({ namespace }) => namespace),
+  webInternalNamespaceDefinitions.map(({ namespace }) => namespace),
 );
 const registeredPrivateModuleByNamespace = new Map(
-  webInternalNamespaces.map(({ namespace, from }) => [namespace, from]),
+  webInternalNamespaceDefinitions.map(({ namespace, from }) => [
+    namespace,
+    from,
+  ]),
 );
 const registeredPrivateNamespaceByModule = new Map(
-  webInternalNamespaces.map(({ namespace, from }) => [from, namespace]),
+  webInternalNamespaceDefinitions.map(({ namespace, from }) => [
+    from,
+    namespace,
+  ]),
 );
-const registeredPrivateModuleEntrypoints = webInternalNamespaces.map(
+const registeredPrivateModuleEntrypoints = webInternalNamespaceDefinitions.map(
   ({ from }) =>
     `${webInternalNamespaceConsumerScope.sourceDirectory}/${from.slice(2)}/index.ts`,
 );
-const registeredPrivateModuleRoots = webInternalNamespaces.map(
+const registeredPrivateModuleRoots = webInternalNamespaceDefinitions.map(
   ({ namespace, from }) => ({
     namespace,
     root: resolve(
