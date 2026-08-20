@@ -9,11 +9,14 @@
 ## Implementation Result
 
 The validated registry now exposes the `i18n` and `siteContent` folder
-interfaces as implicit value namespaces in application source and Vitest. Astro,
-Vitest, generated TypeScript declarations, and ESLint consume projections of the
-same registry, while bootstrap files, registered entrypoints, scripts, external
-packages, workspace packages, Astro components, and side-effect imports retain
-explicit imports.
+interfaces as implicit value namespaces in application source and Vitest. The
+validator and Unimport adapter live together in the explicit
+`@workspace/internal-namespaces` workspace package; `apps/web` supplies its
+globals, transform scope, and concrete registry through that package's single
+definition interface. Astro, Vitest, generated TypeScript declarations, and
+ESLint consume projections of the resulting configured module, while bootstrap
+files, registered entrypoints, scripts, external packages, workspace packages,
+Astro components, and side-effect imports retain explicit imports.
 
 The feasibility spike proved static namespace injection and value typing, but
 Astro's compiled intermediate output did not reliably preserve a type-only

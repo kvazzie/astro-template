@@ -226,9 +226,11 @@ by tooling, not duplicated selector strings.
 1. Run a throwaway feasibility spike with one tiny folder barrel and one
    namespace. Exercise `.ts`, `.astro`, `astro check`, Vitest/watch, editor
    declarations, and the built output. Test paired value/type star entries.
-2. If the spike passes, create the explicit `internalNamespaces` registry and a
-   validator. Keep entries inside `apps/web`; reject duplicate names and reject
-   package specifiers including `@workspace/*`.
+2. If the spike passes, create the explicit `internalNamespaces` registry in
+   `apps/web` and put its validator and Unimport adapter together in a small
+   workspace package. Reject duplicate names and package specifiers including
+   `@workspace/*`; the app must import the package explicitly and supply its
+   concrete registry and transform scope.
 3. Author the minimum public folder entrypoints needed by current code. Do not
    create a barrel for every directory and do not use `dirs` scanning.
 4. Feed the registry into the selected Astro and Vitest plugin adapters and
