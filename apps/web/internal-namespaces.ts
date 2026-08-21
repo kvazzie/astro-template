@@ -8,6 +8,7 @@ export const webApplicationGlobals = Object.freeze({
 
 export const webInternalNamespaces = defineInternalNamespaces(
   [
+    { namespace: "Crush", from: "#/crush" },
     { namespace: "i18n", from: "#/i18n" },
     { namespace: "siteContent", from: "#/content/site" },
   ],

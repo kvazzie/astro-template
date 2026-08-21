@@ -8,6 +8,7 @@ import { loadEnv } from "vite";
 import * as i18nextConfig from "./i18next.config";
 import * as internalNamespaces from "./internal-namespaces";
 import * as i18n from "./src/i18n";
+import * as Crush from "./src/crush";
 
 const defaultSiteUrl = "https://example.com";
 const environment = loadEnv(
@@ -31,6 +32,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    Crush.integration(),
     autoImport(
       internalNamespaces.webInternalNamespaces.createAutoImportOptions(
         "src/@types/internal-namespaces.d.ts",

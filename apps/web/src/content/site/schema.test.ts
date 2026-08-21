@@ -1,6 +1,18 @@
 import { describe, expect, it } from "vitest";
 
 describe("site content schema", () => {
+  it("names the collection and recovers a usable missing entry", () => {
+    expect(siteContent.Site.id).toBe("site");
+    expect(siteContent.Site.schema.parse(undefined)).toEqual({
+      collection: "site",
+      data: {
+        defaultDescriptionKey: siteContent.siteMetadataKeys.defaultDescription,
+        nameKey: siteContent.siteMetadataKeys.name,
+      },
+      id: "default",
+    });
+  });
+
   it("accepts the metadata translation keys owned by the site entry", () => {
     expect(
       siteContent.siteSchema.safeParse({

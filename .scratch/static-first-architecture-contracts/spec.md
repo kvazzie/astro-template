@@ -114,9 +114,9 @@ static site stop the build with actionable diagnostics.
   is developed through TDD.
 - SSG contracts are production build-time functionality, not in-source tests.
   They express states that must be true for a valid static artifact.
-- A failed SSG contract throws an enriched error and aborts prerendering. Catching
-  is permitted only to add structured context or observability and rethrow; it
-  must never recover from invalid state.
+- Failed SSG contracts accumulate diagnostics and may recover with explicit
+  collection contracts so independent static derivation can continue. Recovery
+  never clears a diagnostic; the build throws one aggregate at its boundary.
 - Contract diagnostics include a stable machine-readable code, a human-readable
   message, route or component context where available, the original cause, and a
   useful stack trace.
@@ -166,8 +166,9 @@ static site stop the build with actionable diagnostics.
 - Page tests render representative default-locale and non-default-locale pages.
   They verify the complete handoff from page inputs to rendered layout output.
 - A deliberately invalid static-render fixture exercises the SSG contract at the
-  build boundary. The observable contract is a non-zero build, a stable error
-  code, readable context, preserved cause, and no generated successful artifact.
+  build boundary. The observable contract is a non-zero build, all independent
+  diagnostics, stable codes, readable context, preserved causes, and conspicuous
+  recovery reaching later derivation.
 - OpenTelemetry behavior is tested through the reporter seam with an in-memory
   implementation. Tests verify error status, exception recording, and flushing;
   they do not require a real collector or network access.
@@ -196,8 +197,8 @@ static site stop the build with actionable diagnostics.
 - Rendering layouts, pages, native routing, or content collections in Storybook.
 - Using Storybook as the application end-to-end test runner.
 - Replacing Astro's static output with SSR or adding a deployment adapter.
-- Recovering from invalid SSG state or converting build errors into fallback
-  production markup.
+- Silently recovering from invalid SSG state or treating recovered build output
+  as a successful production artifact.
 - Guaranteeing that build-time contracts can detect states that are neither
   rendered during SSG nor expressed as explicit invariants.
 - Requiring an OpenTelemetry collector, vendor account, remote exporter, or

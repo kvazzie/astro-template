@@ -15,5 +15,5 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "storybook-static"]
+  "exclude": ["dist", "fixtures", "storybook-static"]
 }

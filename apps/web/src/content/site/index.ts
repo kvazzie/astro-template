@@ -1,1 +1,7 @@
-export { siteMetadataKeys, siteSchema, type SiteMetadataKey } from "./schema";
+export {
+  Site,
+  siteEntrySchema,
+  siteMetadataKeys,
+  siteSchema,
+  type SiteMetadataKey,
+} from "./schema";

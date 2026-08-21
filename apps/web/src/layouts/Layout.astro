@@ -2,9 +2,10 @@
 import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
 import { PUBLIC_SITE_URL } from "astro:env/server";
+import { z } from "astro/zod";
 import i18next from "i18next";
 
-import type * as siteContent from "#/content/site";
+import type * as siteContentTypes from "#/content/site";
 import "#/styles/app.css";
 
 export interface Props {
@@ -17,14 +18,17 @@ export interface Props {
 
 const { title, description, image, canonical, noindex = false } = Astro.props;
 
-const siteEntry = await getEntry("site", "default");
-
-if (!siteEntry) {
-  throw new Error("Missing the required site/default content entry");
-}
+const [siteEntry] = await Promise.allSettled([
+  getEntry(siteContent.Site.id, "default"),
+]).then(
+  Crush.if(Crush.at(0)).is(
+    z.undefined(),
+    Crush.instead({ 0: siteContent.Site }),
+  ),
+);
 
 const locale = Astro.currentLocale ?? i18n.defaultLocale;
-const translateSiteMetadata = (key: siteContent.SiteMetadataKey) => {
+const translateSiteMetadata = (key: siteContentTypes.SiteMetadataKey) => {
   switch (key) {
     case "site.name":
       return i18next.t("site.name", "Astro project");
