@@ -31,6 +31,7 @@ try {
         causeMessages.includes("fixture navigation loader failed"),
       diagnostics: errors.length,
       message: error instanceof Error ? error.message : String(error),
+      origins: errors.map((diagnostic) => diagnostic.origin),
       stacksUseful: errors.every(
         (diagnostic) =>
           diagnostic instanceof Error && diagnostic.stack?.includes("at "),

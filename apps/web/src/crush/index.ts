@@ -23,8 +23,13 @@ export interface ContentDiagnostic {
   readonly collectionId: string;
   readonly location: string;
   readonly message: string;
+  readonly origin: DiagnosticOrigin;
   readonly stack: string;
 }
+
+export type DiagnosticOrigin =
+  | { readonly kind: "catch" }
+  | { readonly kind: "selection"; readonly location: string };
 
 interface DiagnosticState {
   diagnostics: ContentDiagnostic[];
@@ -49,6 +54,7 @@ class ContentDiagnosticError extends Error {
   readonly code: ContentDiagnostic["code"];
   readonly collectionId: string;
   readonly location: string;
+  readonly origin: DiagnosticOrigin;
 
   constructor(diagnostic: ContentDiagnostic) {
     super(diagnostic.message, { cause: diagnostic.cause });
@@ -56,6 +62,7 @@ class ContentDiagnosticError extends Error {
     this.code = diagnostic.code;
     this.collectionId = diagnostic.collectionId;
     this.location = diagnostic.location;
+    this.origin = diagnostic.origin;
     this.stack = diagnostic.stack;
   }
 }
@@ -87,16 +94,40 @@ type TupleLocation<Key> = Key extends `${infer Location extends number}`
   ? Location
   : never;
 
+type ContainerLocation<Input> = Input extends readonly unknown[]
+  ? number extends Input["length"]
+    ? number
+    : TupleLocation<Exclude<keyof Input, keyof []>>
+  : Input extends Record<PropertyKey, unknown>
+    ? keyof Input
+    : never;
+
+type RecoveredArray<
+  Input extends readonly unknown[],
+  Matcher extends z.ZodType,
+  Contracts,
+> = (Input extends unknown[]
+  ? Array<SettledValue<Input[number]>>
+  : ReadonlyArray<SettledValue<Input[number]>>) & {
+  [Location in Extract<keyof Contracts, number>]: RecoveredValue<
+    Input[number],
+    Matcher,
+    Contracts[Location]
+  >;
+};
+
 type RecoveredContainer<
   Input,
   Matcher extends z.ZodType,
   Contracts,
 > = Input extends readonly unknown[]
-  ? {
-      [Key in keyof Input]: TupleLocation<Key> extends keyof Contracts
-        ? RecoveredValue<Input[Key], Matcher, Contracts[TupleLocation<Key>]>
-        : SettledValue<Input[Key]>;
-    }
+  ? number extends Input["length"]
+    ? RecoveredArray<Input, Matcher, Contracts>
+    : {
+        [Key in keyof Input]: TupleLocation<Key> extends keyof Contracts
+          ? RecoveredValue<Input[Key], Matcher, Contracts[TupleLocation<Key>]>
+          : SettledValue<Input[Key]>;
+      }
   : Input extends Record<PropertyKey, unknown>
     ? {
         [Key in keyof Input]: Key extends keyof Contracts
@@ -118,18 +149,8 @@ export function instead<const Contracts>(
 }
 
 export function on<Contract extends CollectionContract>(contract: Contract) {
-  return (cause: unknown): ContractOutput<Contract> => {
-    const recovered = contract.schema.parse(
-      undefined,
-    ) as ContractOutput<Contract>;
-    recordDiagnostic({
-      cause,
-      code: "content.rejected-promise",
-      contract,
-      location: "catch",
-    });
-    return recovered;
-  };
+  return (cause: unknown): ContractOutput<Contract> =>
+    recoverRejected(contract, cause, { kind: "catch" });
 }
 
 function formatLocation(location: PropertyKey): string {
@@ -151,10 +172,19 @@ function recordDiagnostic(options: {
   readonly cause?: unknown;
   readonly code: ContentDiagnostic["code"];
   readonly contract: CollectionContract;
-  readonly location: PropertyKey;
+  readonly origin:
+    | { readonly kind: "catch" }
+    | { readonly kind: "selection"; readonly location: PropertyKey };
   readonly value?: unknown;
 }): void {
-  const location = formatLocation(options.location);
+  const origin: DiagnosticOrigin =
+    options.origin.kind === "catch"
+      ? { kind: "catch" }
+      : {
+          kind: "selection",
+          location: formatLocation(options.origin.location),
+        };
+  const location = origin.kind === "catch" ? "catch" : origin.location;
   const detail =
     options.code === "content.rejected-promise"
       ? `promise rejected instead of ${options.contract.id}: ${describeCause(options.cause)}`
@@ -168,8 +198,28 @@ function recordDiagnostic(options: {
     collectionId: options.contract.id,
     location,
     message,
+    origin,
     stack,
   });
+}
+
+function recoverRejected<Contract extends CollectionContract>(
+  contract: Contract,
+  cause: unknown,
+  origin:
+    | { readonly kind: "catch" }
+    | { readonly kind: "selection"; readonly location: PropertyKey },
+): ContractOutput<Contract> {
+  const recovered = contract.schema.parse(
+    undefined,
+  ) as ContractOutput<Contract>;
+  recordDiagnostic({
+    cause,
+    code: "content.rejected-promise",
+    contract,
+    origin,
+  });
+  return recovered;
 }
 
 function compareDiagnostics(
@@ -243,8 +293,18 @@ function crushIf<Locations extends PropertyKey>(
       Contracts extends Record<Locations, CollectionContract>,
     >(matcher: Matcher, replacement: Instead<Contracts>) {
       return <Input extends readonly unknown[] | Record<PropertyKey, unknown>>(
-        input: Input,
+        input: Exclude<Locations, ContainerLocation<Input>> extends never
+          ? Input
+          : never,
       ): RecoveredContainer<Input, Matcher, Contracts> => {
+        for (const location of selector.locations) {
+          if (!Object.hasOwn(input, location)) {
+            throw new Error(
+              `Selected location ${JSON.stringify(String(location))} is not present in the input`,
+            );
+          }
+        }
+
         const output = Array.isArray(input) ? [...input] : { ...input };
         const inputValues = Object.values(input);
         const settledInput =
@@ -270,16 +330,11 @@ function crushIf<Locations extends PropertyKey>(
             isSettledResult(original) &&
             original.status === "rejected"
           ) {
-            const recovered = contract.schema.parse(
-              undefined,
-            ) as (typeof output)[keyof typeof output];
-            recordDiagnostic({
-              cause: original.reason,
-              code: "content.rejected-promise",
+            output[location as keyof typeof output] = recoverRejected(
               contract,
-              location,
-            });
-            output[location as keyof typeof output] = recovered;
+              original.reason,
+              { kind: "selection", location },
+            ) as (typeof output)[keyof typeof output];
             continue;
           }
 
@@ -292,7 +347,7 @@ function crushIf<Locations extends PropertyKey>(
             recordDiagnostic({
               code: "content.invalid-value",
               contract,
-              location,
+              origin: { kind: "selection", location },
               value,
             });
             output[location as keyof typeof output] = recovered;

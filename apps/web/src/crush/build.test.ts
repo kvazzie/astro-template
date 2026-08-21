@@ -60,11 +60,17 @@ describe("Crush static build boundary", () => {
       causePreserved: boolean;
       diagnostics: number;
       message: string;
+      origins: Array<{ kind: string; location?: string }>;
       stacksUseful: boolean;
     };
     expect(report.diagnostics).toBe(3);
     expect(report.causePreserved).toBe(true);
     expect(report.stacksUseful).toBe(true);
+    expect(report.origins).toEqual([
+      { kind: "selection", location: "[0]" },
+      { kind: "selection", location: "[1]" },
+      { kind: "catch" },
+    ]);
     expect(report.message).toContain("3 content diagnostics");
     expect(report.message).toContain("content.invalid-value");
     expect(report.message).toContain("catalog at [0]");

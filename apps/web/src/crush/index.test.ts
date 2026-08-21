@@ -147,6 +147,29 @@ describe("Crush conditional recovery", () => {
       "Authored",
       "Recovered label",
     ]);
+    expectTypeOf(recovered[0]).toEqualTypeOf<string>();
+    expectTypeOf(recovered[1]).toEqualTypeOf<string | undefined>();
+  });
+
+  it("rejects a selector that is not present in the input", () => {
+    const Label = {
+      id: "label",
+      schema: z.string().catch("Recovered label"),
+    } as const;
+    const recover = Crush.if(Crush.at("missing")).is(
+      z.undefined(),
+      Crush.instead({ missing: Label }),
+    );
+
+    expect(() =>
+      recover({ present: undefined } as Record<string, unknown>),
+    ).toThrow('Selected location "missing" is not present in the input');
+
+    const recoverMissingRecord = () => {
+      // @ts-expect-error The exact record type has no selected "missing" key.
+      recover({ present: undefined });
+    };
+    expectTypeOf(recoverMissingRecord).toBeFunction();
   });
 
   it("propagates a collection contract fault as an ordinary failure", () => {

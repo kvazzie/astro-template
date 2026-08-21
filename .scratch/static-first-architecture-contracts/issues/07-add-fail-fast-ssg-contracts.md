@@ -7,7 +7,7 @@ boundary.
 
 **Blocked by:** 04 — Enforce the module import convention.
 
-**Status:** implemented; repository gate blocked by unrelated worktree errors
+**Status:** implemented; review follow-up and repository gate remain
 
 ## Implementation Result
 
@@ -27,6 +27,12 @@ Focused API, type, collection-contract, production-build, and lifecycle tests
 cover the specified seams. The valid application build passes. The full
 repository gate remains blocked by pre-existing configuration type errors in the
 dirty worktree, outside ticket 07.
+
+Review also exposed one ambiguity in the agreed single-operation API. Native
+`PromiseSettledResult` objects have no runtime brand, so a container of ordinary
+values with the exact same `status` and `value` or `reason` fields is
+indistinguishable from `Promise.allSettled` output. Supporting that ordinary
+shape requires a distinct operation or marker and remains an API decision.
 
 ## Problem Statement
 
