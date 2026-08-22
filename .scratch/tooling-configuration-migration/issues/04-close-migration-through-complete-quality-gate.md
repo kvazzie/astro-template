@@ -23,6 +23,6 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
 - [x] Frozen dependency installation succeeds under Node 24.
 - [x] Turbo dry runs contain executable check, lint, and formatting tasks for
       every workspace expected to participate.
-- [ ] The complete repository quality command passes under Node 24.
-- [ ] No unrelated application, static-build, design, localization, or
+- [x] The complete repository quality command passes under Node 24.
+- [x] No unrelated application, static-build, design, localization, or
       deployment behavior changes as part of the migration.
