@@ -8,6 +8,7 @@
   },
   "scripts": {
     "check": "tsc --noEmit",
+    "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {

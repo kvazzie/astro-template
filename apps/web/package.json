@@ -10,6 +10,7 @@
     "i18n:check": "i18next-cli extract --ci --sync-primary && i18next-cli types --ci",
     "i18n:generate": "i18next-cli extract --sync-primary && i18next-cli types",
     "i18n:watch": "i18next-cli extract --watch --sync-primary --with-types",
+    "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "astro preview",
     "storybook": "storybook dev -p 6006 --disable-telemetry",

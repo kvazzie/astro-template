@@ -8,7 +8,7 @@ lint orchestration.
 
 **Blocked by:** 01: Make the shared ESLint contract type-safe.
 
-**Status:** ready-for-agent
+**Status:** completed
 
 - [x] Root lint configuration covers only explicitly claimed root-owned paths
       and does not claim app, package, or tooling workspace files.

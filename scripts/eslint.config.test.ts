@@ -1,10 +1,12 @@
 import { ESLint } from "eslint";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
-import eslintConfig from "../eslint.config";
+import eslintConfig from "../apps/web/eslint.config";
 
 const eslint = new ESLint({
   baseConfig: eslintConfig,
+  cwd: fileURLToPath(new URL("../apps/web/", import.meta.url)),
   overrideConfigFile: true,
 });
 
@@ -19,7 +21,7 @@ export interface Props {
 export const componentName = "example";
 ---
 <h1>{Astro.props.title}</h1>`,
-      { filePath: "apps/web/src/layouts/Layout.astro" },
+      { filePath: "src/layouts/Layout.astro" },
     );
 
     expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
@@ -30,7 +32,7 @@ export const componentName = "example";
   it("rejects explicit bound imports of registered private modules in application source", async () => {
     const [result] = await eslint.lintText(
       'import { defaultLocale } from "#/i18n";\nvoid defaultLocale;',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -48,7 +50,7 @@ export const componentName = "example";
   it("rejects private subpath imports behind a registered namespace", async () => {
     const [result] = await eslint.lintText(
       'import { siteSchema } from "#/content/site/schema";\nvoid siteSchema;',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -61,7 +63,7 @@ export const componentName = "example";
   it("rejects relative imports that bypass a registered module interface", async () => {
     const [result] = await eslint.lintText(
       'import { defaultLocale } from "../i18n";\nvoid defaultLocale;',
-      { filePath: "apps/web/src/pages/example.ts" },
+      { filePath: "src/pages/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -76,7 +78,7 @@ export const componentName = "example";
   it("rejects type imports that bypass the public folder entrypoint", async () => {
     const [result] = await eslint.lintText(
       'import type { SiteMetadataKey } from "#/content/site/schema";\ntype Key = SiteMetadataKey;\nvoid (0 as unknown as Key);',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -89,7 +91,7 @@ export const componentName = "example";
   it("accepts explicit type namespaces for registered modules", async () => {
     const [result] = await eslint.lintText(
       'import type * as siteContent from "#/content/site";\ntype Key = siteContent.SiteMetadataKey;\nvoid (0 as unknown as Key);',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
@@ -100,7 +102,7 @@ export const componentName = "example";
   it("rejects named type imports from registered module entrypoints", async () => {
     const [result] = await eslint.lintText(
       'import type { SiteMetadataKey } from "#/content/site";\ntype Key = SiteMetadataKey;\nvoid (0 as unknown as Key);',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -115,7 +117,7 @@ export const componentName = "example";
   it("accepts explicit internal namespaces in bootstrap configuration", async () => {
     const [result] = await eslint.lintText(
       'import * as siteContent from "./content/site";\nvoid siteContent.siteSchema;',
-      { filePath: "apps/web/src/content.config.ts" },
+      { filePath: "src/content.config.ts" },
     );
 
     expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
@@ -126,11 +128,11 @@ export const componentName = "example";
   it("rejects implicit namespaces where the transform is unavailable", async () => {
     const [bootstrapResult] = await eslint.lintText(
       "void i18n.defaultLocale;",
-      { filePath: "apps/web/src/content.config.ts" },
+      { filePath: "src/content.config.ts" },
     );
     const [entrypointResult] = await eslint.lintText(
       "void siteContent.siteSchema;",
-      { filePath: "apps/web/src/i18n/index.ts" },
+      { filePath: "src/i18n/index.ts" },
     );
 
     for (const result of [bootstrapResult, entrypointResult]) {
@@ -145,7 +147,7 @@ export const componentName = "example";
   it("rejects declarations that shadow an implicit namespace", async () => {
     const [result] = await eslint.lintText(
       "const i18n = { defaultLocale: 'en' };\nvoid i18n.defaultLocale;",
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -160,7 +162,7 @@ export const componentName = "example";
   it("rejects unrelated type imports that shadow an implicit namespace", async () => {
     const [result] = await eslint.lintText(
       'import type * as i18n from "external-package";\ntype Locale = typeof i18n;\nvoid (0 as unknown as Locale);',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -175,7 +177,7 @@ export const componentName = "example";
   it("requires named imports for framework and environment APIs", async () => {
     const [result] = await eslint.lintText(
       'import path from "node:path";\nvoid path;',
-      { filePath: "scripts/example.ts" },
+      { filePath: "astro.config.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -196,7 +198,7 @@ export const componentName = "example";
         "void resolve;",
         "void externalDefault;",
       ].join("\n"),
-      { filePath: "scripts/example.ts" },
+      { filePath: "astro.config.ts" },
     );
 
     expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
@@ -215,7 +217,7 @@ export const componentName = "example";
         "void Layout;",
         "void (0 as unknown as LayoutProps);",
       ].join("\n"),
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages.filter(({ severity }) => severity === 2)).toEqual(
@@ -226,7 +228,7 @@ export const componentName = "example";
   it("requires Astro components to use their default export", async () => {
     const [result] = await eslint.lintText(
       'import * as Layout from "#/layouts/Layout.astro";\nvoid Layout;',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -242,7 +244,7 @@ export const componentName = "example";
   it("rejects named-as-default Astro component imports", async () => {
     const [result] = await eslint.lintText(
       'import { default as Layout } from "#/layouts/Layout.astro";\nvoid Layout;',
-      { filePath: "apps/web/src/example.ts" },
+      { filePath: "src/example.ts" },
     );
 
     expect(result.messages).toEqual(
@@ -262,7 +264,7 @@ import * as Layout from "#/layouts/Layout.astro";
 import * as content from "astro:content";
 ---
 <Layout />`,
-      { filePath: "apps/web/src/pages/[...locale]/index.astro" },
+      { filePath: "src/pages/[...locale]/index.astro" },
     );
 
     expect(result.messages).toEqual(

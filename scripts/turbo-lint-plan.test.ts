@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const execFileAsync = promisify(execFile);
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const packageManagerCli = process.env.npm_execpath;
 
 interface TurboPlan {
   packages: string[];
@@ -17,9 +18,11 @@ interface TurboPlan {
 
 describe("Turbo lint plan", () => {
   it("runs an executable lint task in every workspace", async () => {
+    expect(packageManagerCli).toBeDefined();
+
     const { stdout } = await execFileAsync(
-      "pnpm",
-      ["turbo", "run", "lint", "--dry-run=json"],
+      process.execPath,
+      [packageManagerCli as string, "turbo", "run", "lint", "--dry-run=json"],
       { cwd: repositoryRoot },
     );
     const plan = JSON.parse(stdout) as TurboPlan;
