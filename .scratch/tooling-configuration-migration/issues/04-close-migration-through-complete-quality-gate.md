@@ -14,11 +14,11 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
       packages or their actual CLI consumers, with obsolete root copies removed.
 - [x] The workspace manifest and lockfile describe every app, package, and
       tooling workspace without redundant discovery sources.
-- [ ] The documented root commands match their coordinator behavior and the
+- [x] The documented root commands match their coordinator behavior and the
       local workspace task contract.
 - [ ] The optional MDX instructions use the exported ESLint layers in their
       supported order without installing MDX into the application prematurely.
-- [ ] The tooling glossary and repository documentation use Opt-in scope and
+- [x] The tooling glossary and repository documentation use Opt-in scope and
       Opt-out scope consistently.
 - [x] Frozen dependency installation succeeds under Node 24.
 - [ ] Turbo dry runs contain executable check, lint, and formatting tasks for
