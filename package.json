@@ -9,7 +9,8 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "tooling/*"
   ],
   "scripts": {
     "build": "pnpm design:generate && pnpm i18n:generate && turbo run build",
@@ -23,8 +24,8 @@
     "i18n:check": "pnpm --filter @workspace/web i18n:check",
     "i18n:generate": "pnpm --filter @workspace/web i18n:generate",
     "i18n:watch": "pnpm --filter @workspace/web i18n:watch",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "turbo run lint && eslint scripts",
+    "lint:fix": "turbo run lint -- --fix && eslint scripts --fix",
     "prepare": "pnpm design:generate && pnpm i18n:generate",
     "stylelint": "stylelint \"apps/web/src/**/*.{astro,css,html,md,mdx}\"",
     "stylelint:fix": "pnpm stylelint --fix",
@@ -39,6 +40,8 @@
     "@eslint/js": "^10.0.1",
     "@google/design.md": "0.3.0",
     "@mdx-js/language-server": "^0.6.3",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/prettier": "workspace:*",
     "@types/node": "^24.3.0",
     "concurrently": "^9.2.1",
     "eslint": "^10.6.0",

@@ -9,5 +9,5 @@
     "types": ["node"],
     "verbatimModuleSyntax": true
   },
-  "include": ["src"]
+  "include": ["src", "eslint.config.ts", "prettier.config.ts"]
 }

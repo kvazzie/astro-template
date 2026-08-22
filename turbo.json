@@ -7,7 +7,9 @@
       "outputs": ["dist/**"]
     },
     "check": {
-      "dependsOn": ["^check"],
+      "outputs": []
+    },
+    "lint": {
       "outputs": []
     },
     "dev": {

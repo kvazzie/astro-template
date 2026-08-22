@@ -10,6 +10,7 @@
     "i18n:check": "i18next-cli extract --ci --sync-primary && i18next-cli types --ci",
     "i18n:generate": "i18next-cli extract --sync-primary && i18next-cli types",
     "i18n:watch": "i18next-cli extract --watch --sync-primary --with-types",
+    "lint": "eslint .",
     "preview": "astro preview",
     "storybook": "storybook dev -p 6006 --disable-telemetry",
     "storybook:build": "storybook build --disable-telemetry"
@@ -29,10 +30,16 @@
     "@astrojs/ts-plugin": "^1.10.10",
     "@storybook-astro/framework": "^1.10.0",
     "@storybook/builder-vite": "^10.2.9",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/prettier": "workspace:*",
     "@workspace/internal-namespaces": "workspace:*",
+    "eslint": "^10.6.0",
+    "globals": "^17.3.0",
     "i18next-cli": "catalog:",
+    "prettier": "^3.9.4",
     "storybook": "^10.2.9",
     "typescript": "~5.9.3",
+    "unplugin-auto-import": "^21.1.0",
     "vite": "^8.2.1"
   }
 }

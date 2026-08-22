@@ -7,7 +7,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "unimport": "^6.4.0",
@@ -16,6 +17,10 @@
   "devDependencies": {
     "@astrojs/compiler": "^4.0.0",
     "@types/node": "^24.3.0",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/prettier": "workspace:*",
+    "eslint": "^10.6.0",
+    "prettier": "^3.9.4",
     "typescript": "~5.9.3",
     "vite": "^8.2.1",
     "vitest": "^4.1.10"

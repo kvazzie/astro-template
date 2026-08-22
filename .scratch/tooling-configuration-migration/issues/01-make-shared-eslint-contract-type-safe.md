@@ -15,10 +15,10 @@ layer. Workspace checks must validate the configuration files they execute.
       consumer-scope values without copies, casts, or mutation.
 - [x] Predefined ESLint globals are accepted through the complete ESLint globals
       contract.
-- [ ] Prettier compatibility is an explicit exported layer that consumers place
+- [x] Prettier compatibility is an explicit exported layer that consumers place
       after Astro, internal-namespace, and optional MDX layers.
-- [ ] Every workspace type check includes the local ESLint and Prettier
+- [x] Every workspace type check includes the local ESLint and Prettier
       configuration that its commands execute.
-- [ ] Configuration imports are declared by their owning workspace rather than
+- [x] Configuration imports are declared by their owning workspace rather than
       resolving through root dependency leakage.
-- [ ] The repository type-check command passes.
+- [x] The repository type-check command passes.
