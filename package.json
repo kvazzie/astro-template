@@ -7,11 +7,6 @@
   "engines": {
     "node": ">=24 <25"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tooling/*"
-  ],
   "scripts": {
     "build": "pnpm design:generate && pnpm i18n:generate && turbo run build",
     "check": "pnpm design:generate && pnpm design:check && pnpm i18n:generate && pnpm i18n:check && pnpm fmt:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm storybook:build && pnpm test && pnpm build",
@@ -37,7 +32,6 @@
   },
   "devDependencies": {
     "@dreamsicle.io/stylelint-config-tailwindcss": "^1.2.2",
-    "@eslint/js": "^10.0.1",
     "@google/design.md": "0.3.0",
     "@mdx-js/language-server": "^0.6.3",
     "@tooling/eslint": "workspace:*",
@@ -45,11 +39,6 @@
     "@types/node": "^24.3.0",
     "concurrently": "^9.2.1",
     "eslint": "^10.6.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-astro": "^2.1.1",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-mdx": "^3.8.1",
-    "globals": "^17.3.0",
     "postcss-html": "^1.8.1",
     "prettier": "^3.9.4",
     "prettier-plugin-astro": "^0.14.1",
@@ -59,7 +48,6 @@
     "stylelint-config-standard": "^40.0.0",
     "turbo": "^2.10.7",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.63.0",
     "unplugin-auto-import": "^21.1.0",
     "vitest": "^4.1.10",
     "yaml": "^2.9.0"

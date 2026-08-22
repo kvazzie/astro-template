@@ -12,7 +12,7 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
 
 - [ ] Plugin and configuration dependencies are owned by the shared tooling
       packages or their actual CLI consumers, with obsolete root copies removed.
-- [ ] The workspace manifest and lockfile describe every app, package, and
+- [x] The workspace manifest and lockfile describe every app, package, and
       tooling workspace without redundant discovery sources.
 - [ ] The documented root commands match their coordinator behavior and the
       local workspace task contract.
@@ -20,7 +20,7 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
       supported order without installing MDX into the application prematurely.
 - [ ] The tooling glossary and repository documentation use Opt-in scope and
       Opt-out scope consistently.
-- [ ] Frozen dependency installation succeeds under Node 24.
+- [x] Frozen dependency installation succeeds under Node 24.
 - [ ] Turbo dry runs contain executable check, lint, and formatting tasks for
       every workspace expected to participate.
 - [ ] The complete repository quality command passes under Node 24.

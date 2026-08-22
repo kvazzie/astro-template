@@ -22,9 +22,6 @@ importers:
       '@dreamsicle.io/stylelint-config-tailwindcss':
         specifier: ^1.2.2
         version: 1.2.2(stylelint@17.14.1(typescript@5.9.3))
-      '@eslint/js':
-        specifier: ^10.0.1
-        version: 10.0.1(eslint@10.8.1(jiti@2.7.0))
       '@google/design.md':
         specifier: 0.3.0
         version: 0.3.0
@@ -46,21 +43,6 @@ importers:
       eslint:
         specifier: ^10.6.0
         version: 10.8.1(jiti@2.7.0)
-      eslint-config-prettier:
-        specifier: ^10.1.8
-        version: 10.1.8(eslint@10.8.1(jiti@2.7.0))
-      eslint-plugin-astro:
-        specifier: ^2.1.1
-        version: 2.1.1(@typescript-eslint/parser@8.67.0(eslint@10.8.1(jiti@2.7.0))(typescript@5.9.3))(eslint-plugin-jsx-a11y@6.10.2(eslint@10.8.1(jiti@2.7.0)))(eslint@10.8.1(jiti@2.7.0))
-      eslint-plugin-jsx-a11y:
-        specifier: ^6.10.2
-        version: 6.10.2(eslint@10.8.1(jiti@2.7.0))
-      eslint-plugin-mdx:
-        specifier: ^3.8.1
-        version: 3.8.1(eslint@10.8.1(jiti@2.7.0))
-      globals:
-        specifier: ^17.3.0
-        version: 17.9.0
       postcss-html:
         specifier: ^1.8.1
         version: 1.8.1
@@ -88,9 +70,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      typescript-eslint:
-        specifier: ^8.63.0
-        version: 8.67.0(eslint@10.8.1(jiti@2.7.0))(typescript@5.9.3)
       unplugin-auto-import:
         specifier: ^21.1.0
         version: 21.1.0(esbuild@0.28.2)(oxc-parser@0.127.0)(rolldown@1.2.3)(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
