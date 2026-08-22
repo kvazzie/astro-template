@@ -21,7 +21,7 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
 - [x] The tooling glossary and repository documentation use Opt-in scope and
       Opt-out scope consistently.
 - [x] Frozen dependency installation succeeds under Node 24.
-- [ ] Turbo dry runs contain executable check, lint, and formatting tasks for
+- [x] Turbo dry runs contain executable check, lint, and formatting tasks for
       every workspace expected to participate.
 - [ ] The complete repository quality command passes under Node 24.
 - [ ] No unrelated application, static-build, design, localization, or
