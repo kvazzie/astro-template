@@ -9,6 +9,13 @@
     "check": {
       "outputs": []
     },
+    "fmt": {
+      "cache": false,
+      "outputs": []
+    },
+    "fmt:check": {
+      "outputs": []
+    },
     "lint": {
       "outputs": []
     },

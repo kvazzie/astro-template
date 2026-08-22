@@ -19,7 +19,7 @@ interface TurboPlan {
 }
 
 describe("Turbo task plans", () => {
-  it.each(["check", "lint"])(
+  it.each(["check", "fmt", "fmt:check", "lint"])(
     "runs an executable %s task in every workspace",
     async (taskName) => {
       const { stdout } = await execFileAsync(
