@@ -11,7 +11,8 @@ export default defineConfig(
       "tooling/**",
     ],
   },
-  ...baseConfig,
-  ...nodeConfig,
-  ...eslintConfigPrettier,
+  {
+    files: ["*.{js,mjs,ts}", "scripts/**/*.{js,mjs,ts}"],
+    extends: [...baseConfig, ...nodeConfig, ...eslintConfigPrettier],
+  },
 );

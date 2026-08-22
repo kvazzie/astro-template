@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import type { ParseKeys } from "i18next";
 
-import type * as CrushTypes from "#/crush";
+import type * as Crush from "#/crush";
 
 type TranslationKey = ParseKeys<"common">;
 
@@ -43,4 +43,4 @@ export const Site = {
     },
     id: "default",
   }),
-} as const satisfies CrushTypes.CollectionContract;
+} as const satisfies Crush.CollectionContract;

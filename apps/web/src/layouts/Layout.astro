@@ -5,7 +5,6 @@ import { PUBLIC_SITE_URL } from "astro:env/server";
 import { z } from "astro/zod";
 import i18next from "i18next";
 
-import type * as siteContentTypes from "#/content/site";
 import "#/styles/app.css";
 
 export interface Props {
@@ -28,7 +27,9 @@ const [siteEntry] = await Promise.allSettled([
 );
 
 const locale = Astro.currentLocale ?? i18n.defaultLocale;
-const translateSiteMetadata = (key: siteContentTypes.SiteMetadataKey) => {
+type SiteMetadataKey = (typeof siteEntry.data)[
+  "nameKey" | "defaultDescriptionKey"];
+const translateSiteMetadata = (key: SiteMetadataKey) => {
   switch (key) {
     case "site.name":
       return i18next.t("site.name", "Astro project");
