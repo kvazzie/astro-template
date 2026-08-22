@@ -3,7 +3,6 @@
   "globalDependencies": ["DESIGN.md", ".env*"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "check": {

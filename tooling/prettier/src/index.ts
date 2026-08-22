@@ -1,4 +1,12 @@
 import type { Config } from "prettier";
+import { fileURLToPath } from "node:url";
+
+const astroPlugin = fileURLToPath(
+  import.meta.resolve("prettier-plugin-astro"),
+);
+const tailwindPlugin = fileURLToPath(
+  import.meta.resolve("prettier-plugin-tailwindcss"),
+);
 
 export const basePrettierConfig: Config = {
   arrowParens: "always",
@@ -6,7 +14,7 @@ export const basePrettierConfig: Config = {
   bracketSpacing: true,
   embeddedLanguageFormatting: "auto",
   jsxSingleQuote: false,
-  plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  plugins: [astroPlugin, tailwindPlugin],
   quoteProps: "consistent",
   semi: true,
   singleQuote: false,
