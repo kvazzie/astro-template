@@ -1,4 +1,4 @@
-# Static Content Build
+# Static content build
 
 This context describes how authored content participates in producing a valid
 static artifact. It distinguishes continuing the build from accepting the build
