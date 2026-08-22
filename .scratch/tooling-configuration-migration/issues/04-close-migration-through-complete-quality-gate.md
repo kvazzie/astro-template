@@ -8,7 +8,7 @@ checkout passes the same complete quality gate used by CI.
 **Blocked by:** 01: Make the shared ESLint contract type-safe; 02: Make ESLint
 honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes.
 
-**Status:** ready-for-agent
+**Status:** completed
 
 - [x] Plugin and configuration dependencies are owned by the shared tooling
       packages or their actual CLI consumers, with obsolete root copies removed.
