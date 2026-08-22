@@ -8,21 +8,21 @@ checkout passes the same complete quality gate used by CI.
 **Blocked by:** 01: Make the shared ESLint contract type-safe; 02: Make ESLint
 honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes.
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Plugin and configuration dependencies are owned by the shared tooling
+- [x] Plugin and configuration dependencies are owned by the shared tooling
       packages or their actual CLI consumers, with obsolete root copies removed.
-- [ ] The workspace manifest and lockfile describe every app, package, and
+- [x] The workspace manifest and lockfile describe every app, package, and
       tooling workspace without redundant discovery sources.
-- [ ] The documented root commands match their coordinator behavior and the
+- [x] The documented root commands match their coordinator behavior and the
       local workspace task contract.
-- [ ] The optional MDX instructions use the exported ESLint layers in their
+- [x] The optional MDX instructions use the exported ESLint layers in their
       supported order without installing MDX into the application prematurely.
-- [ ] The tooling glossary and repository documentation use Opt-in scope and
+- [x] The tooling glossary and repository documentation use Opt-in scope and
       Opt-out scope consistently.
-- [ ] Frozen dependency installation succeeds under Node 24.
-- [ ] Turbo dry runs contain executable check, lint, and formatting tasks for
+- [x] Frozen dependency installation succeeds under Node 24.
+- [x] Turbo dry runs contain executable check, lint, and formatting tasks for
       every workspace expected to participate.
-- [ ] The complete repository quality command passes under Node 24.
-- [ ] No unrelated application, static-build, design, localization, or
+- [x] The complete repository quality command passes under Node 24.
+- [x] No unrelated application, static-build, design, localization, or
       deployment behavior changes as part of the migration.

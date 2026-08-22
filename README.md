@@ -48,6 +48,11 @@ fall back to `https://example.com` so a fresh install and CI remain valid.
 .
 ├── apps/
 │   └── web/                 # Astro application
+├── packages/
+│   └── internal-namespaces/ # Shared internal-namespace contract
+├── tooling/
+│   ├── eslint/              # Shared typed ESLint layers
+│   └── prettier/            # Shared Prettier configuration
 ├── scripts/                 # Design generation and validation
 ├── .github/                 # Quality CI, Dependabot, issue templates
 ├── DESIGN.md                # Design values and intent
@@ -57,8 +62,9 @@ fall back to `https://example.com` so a fresh install and CI remain valid.
 └── pnpm-workspace.yaml
 ```
 
-Shared packages belong under `packages/` when the first real shared boundary
-appears. The template does not create an empty package layer in advance.
+`pnpm-workspace.yaml` is the only workspace discovery source. Application and
+domain packages live under `apps/` and `packages/`; private quality configuration
+lives under `tooling/`.
 
 ## What is included
 
@@ -70,10 +76,13 @@ The initial page contains only enough structure to prove the foundation works.
 There is no navigation, footer, component showcase, remote font, placeholder
 logo, favicon, social image, form backend, deployment adapter, or provider state.
 
-Quality tooling lives at the workspace root:
+Shared ESLint and Prettier configuration lives in private `tooling/*` packages.
+The root coordinates workspace tasks and checks only explicitly selected files
+in its Opt-in scope. Each workspace checks every normal file in its Opt-out scope
+and owns its generated-file and build-output exclusions.
 
-- ESLint flat configuration for TypeScript, Astro, and accessibility;
-- Prettier with Astro and Tailwind plugins;
+- typed ESLint layers for TypeScript, Astro, MDX, and accessibility;
+- shared Prettier configuration with Astro and Tailwind plugins;
 - Stylelint for CSS, Astro, and future MDX styles;
 - Vitest for public infrastructure seams;
 - EditorConfig, Helix, and VS Code settings;
@@ -81,23 +90,31 @@ Quality tooling lives at the workspace root:
 
 ## Commands
 
-| Command                | Purpose                                       |
-| ---------------------- | --------------------------------------------- |
-| `pnpm dev`             | Watch design/i18n generation and start Astro  |
-| `pnpm build`           | Regenerate design/i18n and build every app    |
-| `pnpm check`           | Run the complete local and CI quality gate    |
-| `pnpm typecheck`       | Run Astro checks through Turbo                |
-| `pnpm storybook`       | Run the Astro UI component workbench          |
-| `pnpm storybook:build` | Build the static UI component workbench       |
-| `pnpm test`            | Run Vitest once                               |
-| `pnpm lint`            | Check JavaScript, TypeScript, and Astro       |
-| `pnpm stylelint`       | Check CSS and embedded styles                 |
-| `pnpm fmt:check`       | Check repository formatting                   |
-| `pnpm fmt`             | Apply Prettier explicitly                     |
-| `pnpm design:check`    | Lint/export DESIGN.md and verify its contract |
-| `pnpm design:generate` | Write disposable generated design CSS         |
-| `pnpm i18n:check`      | Check extracted English and generated types   |
-| `pnpm i18n:generate`   | Extract English copy and generate types       |
+| Command                | Purpose                                         |
+| ---------------------- | ----------------------------------------------- |
+| `pnpm dev`             | Watch design/i18n generation and start Astro    |
+| `pnpm build`           | Regenerate design/i18n and build every app      |
+| `pnpm check`           | Run the complete local and CI quality gate      |
+| `pnpm typecheck`       | Run every workspace `check` task through Turbo  |
+| `pnpm storybook`       | Run the Astro UI component workbench            |
+| `pnpm storybook:build` | Build the static UI component workbench         |
+| `pnpm test`            | Run Vitest once                                 |
+| `pnpm lint`            | Coordinate workspace and root Opt-in linting    |
+| `pnpm lint:fix`        | Apply ESLint fixes in the same ownership scopes |
+| `pnpm stylelint`       | Check CSS and embedded styles                   |
+| `pnpm fmt:check`       | Coordinate workspace and root Opt-in formatting |
+| `pnpm fmt`             | Apply Prettier in the same ownership scopes     |
+| `pnpm design:check`    | Lint/export DESIGN.md and verify its contract   |
+| `pnpm design:generate` | Write disposable generated design CSS           |
+| `pnpm i18n:check`      | Check extracted English and generated types     |
+| `pnpm i18n:generate`   | Extract English copy and generate types         |
+
+The root lint and formatting commands dispatch the matching workspace task with
+Turbo, then run the root configuration against its explicit path list. Every
+workspace must provide `check`, `lint`, `lint:fix`, `fmt:check`, and `fmt` scripts;
+Turbo dry-run tests keep that local task contract executable. `pnpm check` adds
+generation, design and localization validation, Stylelint, Storybook, Vitest,
+and the production build to those coordinated checks.
 
 Git hooks installed by Devenv are checks only. Pre-commit runs formatting, ESLint,
 and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
@@ -187,9 +204,11 @@ cd apps/web
 pnpm astro add mdx
 ```
 
-Then import `mdxConfig` from the root `eslint.mdx.config.mjs` and spread it before
-`eslint-config-prettier` in `eslint.config.ts`. Add a real `.mdx` page and run
-`pnpm check`; do not install MDX as a dormant dependency.
+Then import `mdxConfig` from `@tooling/eslint` in
+`apps/web/eslint.config.ts`. Keep the existing base, Astro, and internal-namespace
+layers in place; insert `...mdxConfig` immediately before
+`...eslintConfigPrettier`. Add a real `.mdx` page and run `pnpm check`; do not
+install MDX as a dormant dependency.
 
 ## Devenv and editors
 

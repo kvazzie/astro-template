@@ -3,7 +3,6 @@
   "globalDependencies": ["DESIGN.md", ".env*"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "check": {
@@ -17,6 +16,10 @@
       "outputs": []
     },
     "lint": {
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false,
       "outputs": []
     },
     "dev": {
