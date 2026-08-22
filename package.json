@@ -9,7 +9,8 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "tooling/*"
   ],
   "scripts": {
     "build": "pnpm design:generate && pnpm i18n:generate && turbo run build",
@@ -39,6 +40,8 @@
     "@eslint/js": "^10.0.1",
     "@google/design.md": "0.3.0",
     "@mdx-js/language-server": "^0.6.3",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/prettier": "workspace:*",
     "@types/node": "^24.3.0",
     "concurrently": "^9.2.1",
     "eslint": "^10.6.0",

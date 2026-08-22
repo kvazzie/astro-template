@@ -7,18 +7,18 @@ layer. Workspace checks must validate the configuration files they execute.
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Shared ESLint layers compose through ESLint's typed configuration helper
+- [x] Shared ESLint layers compose through ESLint's typed configuration helper
       without widened tuple or rule-severity errors.
-- [ ] The internal-namespace configuration accepts readonly namespace and
+- [x] The internal-namespace configuration accepts readonly namespace and
       consumer-scope values without copies, casts, or mutation.
-- [ ] Predefined ESLint globals are accepted through the complete ESLint globals
+- [x] Predefined ESLint globals are accepted through the complete ESLint globals
       contract.
-- [ ] Prettier compatibility is an explicit exported layer that consumers place
+- [x] Prettier compatibility is an explicit exported layer that consumers place
       after Astro, internal-namespace, and optional MDX layers.
-- [ ] Every workspace type check includes the local ESLint and Prettier
+- [x] Every workspace type check includes the local ESLint and Prettier
       configuration that its commands execute.
-- [ ] Configuration imports are declared by their owning workspace rather than
+- [x] Configuration imports are declared by their owning workspace rather than
       resolving through root dependency leakage.
-- [ ] The repository type-check command passes.
+- [x] The repository type-check command passes.
