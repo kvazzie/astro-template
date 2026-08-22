@@ -5,11 +5,20 @@ import {
   eslintConfigPrettier,
 } from "@tooling/eslint";
 import { defineConfig } from "eslint/config";
+import { relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   webApplicationGlobals,
   webInternalNamespaces,
 } from "./internal-namespaces.ts";
+
+const repositoryRoot = new URL("../../", import.meta.url);
+const toWorkspacePath = (repositoryPath: string) =>
+  relative(
+    import.meta.dirname,
+    fileURLToPath(new URL(repositoryPath, repositoryRoot)),
+  );
 
 export default defineConfig(
   {
@@ -28,12 +37,22 @@ export default defineConfig(
   ...baseConfig,
   ...astroConfig,
   ...createInternalNamespacesConfig({
-    consumerScope: webInternalNamespaces.consumerScope,
+    consumerScope: {
+      ...webInternalNamespaces.consumerScope,
+      bootstrapFiles:
+        webInternalNamespaces.consumerScope.bootstrapFiles.map(
+          toWorkspacePath,
+        ),
+      sourceDirectory: toWorkspacePath(
+        webInternalNamespaces.consumerScope.sourceDirectory,
+      ),
+    },
     namespaces: webInternalNamespaces.namespaces,
     globals: webApplicationGlobals,
+    rootDir: import.meta.dirname,
   }),
   {
-    files: ["apps/web/**/*.astro", "src/**/*.astro"],
+    files: ["src/**/*.astro"],
     languageOptions: {
       parserOptions: {
         project: "./tsconfig.json",

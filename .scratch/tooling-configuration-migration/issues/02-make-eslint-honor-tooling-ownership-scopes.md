@@ -14,9 +14,9 @@ lint orchestration.
       and does not claim app, package, or tooling workspace files.
 - [ ] Each workspace lint configuration covers normal files within its boundary
       by default and excludes only deliberate artifacts.
-- [ ] A regression test executes from the application workspace boundary with
+- [x] A regression test executes from the application workspace boundary with
       app-local file paths.
-- [ ] The regression test rejects a registered private import and accepts an
+- [x] The regression test rejects a registered private import and accepts an
       allowed import, proving that application rules are active.
 - [ ] Every app, package, and tooling workspace exposes executable lint and
       lint-fix tasks.
