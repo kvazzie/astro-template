@@ -7,7 +7,7 @@ layer. Workspace checks must validate the configuration files they execute.
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed
 
 - [x] Shared ESLint layers compose through ESLint's typed configuration helper
       without widened tuple or rule-severity errors.
