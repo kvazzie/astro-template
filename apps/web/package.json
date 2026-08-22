@@ -7,6 +7,8 @@
     "build": "astro build",
     "check": "astro check",
     "dev": "astro dev",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
     "i18n:check": "i18next-cli extract --ci --sync-primary && i18next-cli types --ci",
     "i18n:generate": "i18next-cli extract --sync-primary && i18next-cli types",
     "i18n:watch": "i18next-cli extract --watch --sync-primary --with-types",

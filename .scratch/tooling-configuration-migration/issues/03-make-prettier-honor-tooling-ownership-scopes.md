@@ -9,9 +9,9 @@ formatted automatically.
 
 **Status:** ready-for-agent
 
-- [ ] Root format commands select only explicitly claimed root-owned paths and
+- [x] Root format commands select only explicitly claimed root-owned paths and
       coordinate workspace formatting separately.
-- [ ] Every app, package, and tooling workspace exposes executable format-check
+- [x] Every app, package, and tooling workspace exposes executable format-check
       and format-fix tasks.
 - [ ] Each workspace format command covers normal files within its boundary by
       default.
@@ -22,5 +22,5 @@ formatted automatically.
       and is not rewritten by the format-fix command.
 - [ ] Prettier and shared Prettier configuration imports are declared by the
       workspaces that execute or consume them.
-- [ ] Turbo's formatting plan contains no nonexistent workspace commands.
+- [x] Turbo's formatting plan contains no nonexistent workspace commands.
 - [ ] The repository format-check command passes after generation.
