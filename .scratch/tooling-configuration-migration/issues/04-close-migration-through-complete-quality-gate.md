@@ -10,13 +10,13 @@ honor tooling ownership scopes; 03: Make Prettier honor tooling ownership scopes
 
 **Status:** ready-for-agent
 
-- [ ] Plugin and configuration dependencies are owned by the shared tooling
+- [x] Plugin and configuration dependencies are owned by the shared tooling
       packages or their actual CLI consumers, with obsolete root copies removed.
 - [x] The workspace manifest and lockfile describe every app, package, and
       tooling workspace without redundant discovery sources.
 - [x] The documented root commands match their coordinator behavior and the
       local workspace task contract.
-- [ ] The optional MDX instructions use the exported ESLint layers in their
+- [x] The optional MDX instructions use the exported ESLint layers in their
       supported order without installing MDX into the application prematurely.
 - [x] The tooling glossary and repository documentation use Opt-in scope and
       Opt-out scope consistently.

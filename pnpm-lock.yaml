@@ -49,12 +49,6 @@ importers:
       prettier:
         specifier: ^3.9.4
         version: 3.9.6
-      prettier-plugin-astro:
-        specifier: ^0.14.1
-        version: 0.14.1
-      prettier-plugin-tailwindcss:
-        specifier: ^0.8.0
-        version: 0.8.1(prettier-plugin-astro@0.14.1)(prettier@3.9.6)
       stylelint:
         specifier: ^17.14.0
         version: 17.14.1(typescript@5.9.3)

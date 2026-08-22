@@ -204,9 +204,11 @@ cd apps/web
 pnpm astro add mdx
 ```
 
-Then import `mdxConfig` from the root `eslint.mdx.config.mjs` and spread it before
-`eslint-config-prettier` in `eslint.config.ts`. Add a real `.mdx` page and run
-`pnpm check`; do not install MDX as a dormant dependency.
+Then import `mdxConfig` from `@tooling/eslint` in
+`apps/web/eslint.config.ts`. Keep the existing base, Astro, and internal-namespace
+layers in place; insert `...mdxConfig` immediately before
+`...eslintConfigPrettier`. Add a real `.mdx` page and run `pnpm check`; do not
+install MDX as a dormant dependency.
 
 ## Devenv and editors
 
