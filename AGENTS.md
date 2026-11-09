@@ -7,18 +7,17 @@ coherent workflow instead of adding configuration for every possible user.
 
 ### Issue tracker
 
-Issues and specs live as local Markdown under `.scratch/`. See
-`docs/agents/issue-tracker.md`.
+New issues and specs live in GitHub Issues; existing local work remains in
+`.scratch/`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
-Local issue status uses the five canonical triage roles. See
+GitHub Issues use the five canonical triage roles. See
 `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
-This repository uses a multi-context glossary layout rooted at
-`CONTEXT-MAP.md`. See `docs/agents/domain.md`.
+This repository uses a single root glossary. See `docs/agents/domain.md`.
 
 ## Repository map
 

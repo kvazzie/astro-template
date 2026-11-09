@@ -42,6 +42,18 @@ pnpm dev
 Copy `.env.example` to `.env` and set `PUBLIC_SITE_URL` before production. Builds
 fall back to `https://example.com` so a fresh install and CI remain valid.
 
+## Agent skills
+
+After cloning the repository or creating a worktree, restore the project skill
+set with `node scripts/setup-skills.mjs`. This downloads the current versions
+of the sources listed in `skills-lock.json`; the lock records content hashes
+for update checks but does not pin a source revision. Installed copies are
+ignored by Git. Run `npx skills check` to check for updates and
+`npx skills update` to refresh them.
+
+Existing local specs and tickets remain in `.scratch/`. New issues use GitHub
+Issues; see `docs/agents/issue-tracker.md` for the transition rules.
+
 ## Repository map
 
 ```text
