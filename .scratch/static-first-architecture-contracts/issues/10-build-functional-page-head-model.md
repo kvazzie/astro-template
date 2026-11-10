@@ -5,7 +5,7 @@ functional page-head API that accepts already translated constituent values and
 returns the complete immutable model needed to render canonical, social, robots,
 image, title, description, and browser-theme metadata.
 
-**Blocked by:** 03 — Generate the i18next TypeScript layer; 04 — Enforce the module import convention; 05 — Export component contracts explicitly; 07 — Add fail-fast SSG contracts; 09 — Export DTCG design tokens for build-time consumers.
+**Blocked by:** 03 — Generate the i18next TypeScript layer; 04 — Enforce the module import convention; 05 — Export component contracts explicitly; 07 — Accumulate SSG diagnostics with explicit recovery; 09 — Export DTCG design tokens for build-time consumers.
 
 **Status:** ready-for-agent
 

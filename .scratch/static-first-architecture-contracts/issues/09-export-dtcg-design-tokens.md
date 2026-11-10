@@ -5,7 +5,7 @@ atomically produces both styling CSS and tool-neutral DTCG JSON, giving Astro
 frontmatter a validated build-time source for browser metadata without shipping
 the token document to the client.
 
-**Blocked by:** 07 — Add fail-fast SSG contracts.
+**Blocked by:** 07 — Accumulate SSG diagnostics with explicit recovery.
 
 **Status:** ready-for-agent
 

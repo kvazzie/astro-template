@@ -22,10 +22,10 @@
   ];
 
   git-hooks.hooks = {
-    format-check = {
+    fmt-check = {
       enable = true;
-      name = "format check";
-      entry = "pnpm format:check";
+      name = "fmt check";
+      entry = "pnpm fmt:check";
       language = "system";
       pass_filenames = false;
       stages = [ "pre-commit" ];

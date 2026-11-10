@@ -1,0 +1,32 @@
+{
+  "name": "@tooling/eslint",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^2.1.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-mdx": "^3.8.1",
+    "globals": "^17.3.0",
+    "typescript-eslint": "^8.63.0"
+  },
+  "devDependencies": {
+    "@tooling/prettier": "workspace:*",
+    "@types/node": "^24.3.0",
+    "eslint": "^10.6.0",
+    "prettier": "^3.9.4",
+    "typescript": "~5.9.3"
+  }
+}

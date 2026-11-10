@@ -4,7 +4,7 @@
 clear conversion boundary that supplies a valid BCP 47 document language instead
 of letting reusable modules read Astro's current locale implicitly.
 
-**Blocked by:** 04 — Enforce the module import convention; 05 — Export component contracts explicitly; 07 — Add fail-fast SSG contracts.
+**Blocked by:** 04 — Enforce the module import convention; 05 — Export component contracts explicitly; 07 — Accumulate SSG diagnostics with explicit recovery.
 
 **Status:** ready-for-agent
 

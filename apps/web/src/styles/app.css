@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./design.generated.css";
+@import "../assets/.generated/design.css";
 
 @plugin "daisyui" {
   themes: false;

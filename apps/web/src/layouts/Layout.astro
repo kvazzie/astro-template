@@ -1,16 +1,15 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
+import { PUBLIC_SITE_URL } from "astro:env/server";
+import { z } from "astro/zod";
 import i18next from "i18next";
 
-import type { TranslationKey } from "#/i18n/resources";
-import { defaultLocale, supportedLocales } from "#/i18n/config";
-import { localizePathname } from "#/i18n/pathname";
 import "#/styles/app.css";
 
-interface Props {
-  title: TranslationKey;
-  description?: TranslationKey;
+export interface Props {
+  title: string;
+  description?: string;
   image?: string;
   canonical?: string;
   noindex?: boolean;
@@ -18,22 +17,47 @@ interface Props {
 
 const { title, description, image, canonical, noindex = false } = Astro.props;
 
-const siteEntry = await getEntry("site", "default");
+const [siteEntry] = await Promise.allSettled([
+  getEntry(siteContent.Site.id, "default"),
+]).then(
+  Crush.if(Crush.at(0)).is(
+    z.undefined(),
+    Crush.instead({ 0: siteContent.Site }),
+  ),
+);
 
-if (!siteEntry) {
-  throw new Error("Missing the required site/default content entry");
-}
-
-const locale = Astro.currentLocale ?? defaultLocale;
-const siteName = i18next.t(siteEntry.data.nameKey);
-const pageTitle = i18next.t(title);
+const locale = Astro.currentLocale ?? i18n.defaultLocale;
+type SiteMetadataKey = (typeof siteEntry.data)[
+  "nameKey" | "defaultDescriptionKey"];
+const translateSiteMetadata = (key: SiteMetadataKey) => {
+  switch (key) {
+    case "site.name":
+      return i18next.t("site.name", "Astro project");
+    case "site.description":
+      return i18next.t(
+        "site.description",
+        "An opinionated Astro project foundation.",
+      );
+    default:
+      throw new Error(
+        `Expected a site metadata translation key, received ${key}`,
+      );
+  }
+};
+const siteName = translateSiteMetadata(siteEntry.data.nameKey);
+const pageTitle = title;
 const fullTitle =
   pageTitle === siteName ? pageTitle : `${pageTitle} | ${siteName}`;
-const pageDescription = i18next.t(
-  description ?? siteEntry.data.defaultDescriptionKey,
-);
-const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site);
-const imageUrl = image ? new URL(image, Astro.site) : undefined;
+const pageDescription =
+  description ?? translateSiteMetadata(siteEntry.data.defaultDescriptionKey);
+const siteUrl = Astro.site;
+
+if (!siteUrl || siteUrl.href !== new URL(PUBLIC_SITE_URL).href) {
+  throw new Error("Astro.site must match the schema-backed PUBLIC_SITE_URL");
+}
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, siteUrl);
+const imageUrl = image ? new URL(image, siteUrl) : undefined;
 ---
 
 <!doctype html>
@@ -46,19 +70,19 @@ const imageUrl = image ? new URL(image, Astro.site) : undefined;
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     {
-      supportedLocales.map((supportedLocale) => (
+      i18n.supportedLocales.map((supportedLocale) => (
         <link
           rel="alternate"
           hreflang={supportedLocale}
           href={
             new URL(
-              localizePathname(
+              i18n.localizePathname(
                 Astro.url.pathname,
                 supportedLocale,
-                supportedLocales,
-                defaultLocale,
+                i18n.supportedLocales,
+                i18n.defaultLocale,
               ),
-              Astro.site,
+              siteUrl,
             )
           }
         />
@@ -82,7 +106,7 @@ const imageUrl = image ? new URL(image, Astro.site) : undefined;
   </head>
   <body class="min-h-screen bg-base-100 text-base-content antialiased">
     <a class="skip-link" href="#main-content">
-      {i18next.t("a11y.skipToContent")}
+      {i18next.t("a11y.skipToContent", "Skip to content")}
     </a>
     <main id="main-content" tabindex="-1">
       <slot />

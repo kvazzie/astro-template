@@ -9,18 +9,15 @@ import {
 import { mkdir, rename, writeFile } from "node:fs/promises";
 import { watch } from "node:fs";
 import { tmpdir } from "node:os";
-import path from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parse as parseYaml } from "yaml";
 
-const repositoryRoot = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-);
-const designPath = path.join(repositoryRoot, "DESIGN.md");
-const outputPath = path.join(
+const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const designPath = join(repositoryRoot, "DESIGN.md");
+const outputPath = join(
   repositoryRoot,
-  "apps/web/src/styles/design.generated.css",
+  "apps/web/src/assets/.generated/design.css",
 );
 const designMdEntrypoint = fileURLToPath(
   import.meta.resolve("@google/design.md"),
@@ -106,8 +103,8 @@ function runDesignMd(args) {
   // designmd's async CLI currently flushes output only when stdout is inherited
   // or file-backed. A temporary file keeps generation deterministic while still
   // letting us validate the complete output before replacing the target.
-  const temporaryDirectory = mkdtempSync(path.join(tmpdir(), "designmd-"));
-  const stdoutPath = path.join(temporaryDirectory, "stdout");
+  const temporaryDirectory = mkdtempSync(join(tmpdir(), "designmd-"));
+  const stdoutPath = join(temporaryDirectory, "stdout");
   const stdout = openSync(stdoutPath, "w");
 
   try {
@@ -158,10 +155,10 @@ async function generateDesignCss() {
   const css = exportDesignCss();
   const temporaryPath = `${outputPath}.${process.pid}.tmp`;
 
-  await mkdir(path.dirname(outputPath), { recursive: true });
+  await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(temporaryPath, css, "utf8");
   await rename(temporaryPath, outputPath);
-  console.log(`Generated ${path.relative(repositoryRoot, outputPath)}`);
+  console.log(`Generated ${relative(repositoryRoot, outputPath)}`);
 }
 
 function checkDesignCss() {
@@ -201,7 +198,7 @@ async function main(command) {
 }
 
 const isEntrypoint = process.argv[1]
-  ? pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url
+  ? pathToFileURL(resolve(process.argv[1])).href === import.meta.url
   : false;
 
 if (isEntrypoint) {

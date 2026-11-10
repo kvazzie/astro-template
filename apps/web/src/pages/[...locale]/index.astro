@@ -3,17 +3,30 @@ import i18next from "i18next";
 
 import Layout from "#/layouts/Layout.astro";
 
+export interface Props {}
+
 export { getStaticPaths } from "@gutenye/astro-i18next";
+
+const title = i18next.t("page.title", "Home");
+const description = i18next.t(
+  "page.description",
+  "A clean starting point for the next site.",
+);
 ---
 
-<Layout title="page.title" description="page.description">
+<Layout {title} {description}>
   <section class="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-16">
     <div>
       <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
-        {i18next.t("page.heading")}
+        {i18next.t("page.heading", "Start building.")}
       </h1>
       <p class="mt-4 max-w-prose text-lg text-base-content/70">
-        {i18next.t("page.intro")}
+        {
+          i18next.t(
+            "page.intro",
+            "The project foundation is ready; the product decisions are yours.",
+          )
+        }
       </p>
     </div>
   </section>

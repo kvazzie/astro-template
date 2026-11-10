@@ -6,10 +6,8 @@ node_modules/
 .astro/
 dist/
 coverage/
+storybook-static/
 .turbo/
-
-# Generated design artifacts
-apps/web/src/styles/design.generated.css
 
 # Local environment
 .devenv/
@@ -32,3 +30,9 @@ Thumbs.db
 # Editors (project-owned settings are committed explicitly)
 .idea/
 *.swp
+
+# Installed agent skills and harness links
+/.agents/skills/*
+!/.agents/skills/.ignore
+!/.agents/skills/.gitignore
+/.claude/

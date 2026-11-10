@@ -1,0 +1,14 @@
+# Dependencies and build output
+node_modules/
+.astro/
+dist/
+coverage/
+storybook-static/
+.turbo/
+
+# Generated source artifacts
+src/@types/i18next.d.ts
+src/@types/internal-namespaces.d.ts
+src/@types/resources.d.ts
+src/assets/.generated/
+src/assets/i18next/.en/

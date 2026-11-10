@@ -6,9 +6,9 @@ type inference, and one authoritative declaration of public and secret access.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] The public site URL is declared through Astro's environment schema with build-safe behavior preserved.
-- [ ] Application code reads schema-backed environment exports rather than custom import-meta declarations.
-- [ ] The obsolete hand-written environment type declaration is removed.
-- [ ] Type checking, static build, and the complete quality command pass.
+- [x] The public site URL is declared through Astro's environment schema with build-safe behavior preserved.
+- [x] Application code reads schema-backed environment exports rather than custom import-meta declarations.
+- [x] The obsolete hand-written environment type declaration is removed.
+- [x] Type checking, static build, and the complete quality command pass.

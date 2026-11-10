@@ -1,0 +1,27 @@
+{
+  "name": "@tooling/prettier",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.0"
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "@types/node": "^24.3.0",
+    "eslint": "^10.6.0",
+    "prettier": "^3.9.4",
+    "typescript": "~5.9.3"
+  }
+}

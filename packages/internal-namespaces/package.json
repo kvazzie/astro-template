@@ -1,0 +1,31 @@
+{
+  "name": "@workspace/internal-namespaces",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "unimport": "^6.4.0",
+    "unplugin-auto-import": "^21.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/compiler": "^4.0.0",
+    "@types/node": "^24.3.0",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/prettier": "workspace:*",
+    "eslint": "^10.6.0",
+    "prettier": "^3.9.4",
+    "typescript": "~5.9.3",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  }
+}

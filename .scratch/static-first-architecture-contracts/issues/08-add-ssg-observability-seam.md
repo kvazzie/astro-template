@@ -4,7 +4,7 @@
 narrow optional tracing seam while keeping local builds private, dependency-light,
 and fully useful without a collector or network connection.
 
-**Blocked by:** 07 — Add fail-fast SSG contracts.
+**Blocked by:** 07 — Accumulate SSG diagnostics with explicit recovery.
 
 **Status:** ready-for-agent
 

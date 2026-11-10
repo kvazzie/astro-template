@@ -42,12 +42,29 @@ pnpm dev
 Copy `.env.example` to `.env` and set `PUBLIC_SITE_URL` before production. Builds
 fall back to `https://example.com` so a fresh install and CI remain valid.
 
+## Agent skills
+
+After cloning the repository or creating a worktree, restore the project skill
+set with `node scripts/setup-skills.mjs`. This downloads the current versions
+of the sources listed in `skills-lock.json`; the lock records content hashes
+for update checks but does not pin a source revision. Installed copies are
+ignored by Git. Run `npx skills check` to check for updates and
+`npx skills update` to refresh them.
+
+Existing local specs and tickets remain in `.scratch/`. New issues use GitHub
+Issues; see `docs/agents/issue-tracker.md` for the transition rules.
+
 ## Repository map
 
 ```text
 .
 ├── apps/
 │   └── web/                 # Astro application
+├── packages/
+│   └── internal-namespaces/ # Shared internal-namespace contract
+├── tooling/
+│   ├── eslint/              # Shared typed ESLint layers
+│   └── prettier/            # Shared Prettier configuration
 ├── scripts/                 # Design generation and validation
 ├── .github/                 # Quality CI, Dependabot, issue templates
 ├── DESIGN.md                # Design values and intent
@@ -57,8 +74,9 @@ fall back to `https://example.com` so a fresh install and CI remain valid.
 └── pnpm-workspace.yaml
 ```
 
-Shared packages belong under `packages/` when the first real shared boundary
-appears. The template does not create an empty package layer in advance.
+`pnpm-workspace.yaml` is the only workspace discovery source. Application and
+domain packages live under `apps/` and `packages/`; private quality configuration
+lives under `tooling/`.
 
 ## What is included
 
@@ -70,10 +88,13 @@ The initial page contains only enough structure to prove the foundation works.
 There is no navigation, footer, component showcase, remote font, placeholder
 logo, favicon, social image, form backend, deployment adapter, or provider state.
 
-Quality tooling lives at the workspace root:
+Shared ESLint and Prettier configuration lives in private `tooling/*` packages.
+The root coordinates workspace tasks and checks only explicitly selected files
+in its Opt-in scope. Each workspace checks every normal file in its Opt-out scope
+and owns its generated-file and build-output exclusions.
 
-- ESLint flat configuration for TypeScript, Astro, and accessibility;
-- Prettier with Astro and Tailwind plugins;
+- typed ESLint layers for TypeScript, Astro, MDX, and accessibility;
+- shared Prettier configuration with Astro and Tailwind plugins;
 - Stylelint for CSS, Astro, and future MDX styles;
 - Vitest for public infrastructure seams;
 - EditorConfig, Helix, and VS Code settings;
@@ -81,28 +102,40 @@ Quality tooling lives at the workspace root:
 
 ## Commands
 
-| Command                | Purpose                                       |
-| ---------------------- | --------------------------------------------- |
-| `pnpm dev`             | Generate/watch design tokens and start Astro  |
-| `pnpm build`           | Regenerate tokens and build every app         |
-| `pnpm check`           | Run the complete local and CI quality gate    |
-| `pnpm typecheck`       | Run Astro checks through Turbo                |
-| `pnpm test`            | Run Vitest once                               |
-| `pnpm lint`            | Check JavaScript, TypeScript, and Astro       |
-| `pnpm stylelint`       | Check CSS and embedded styles                 |
-| `pnpm format:check`    | Check repository formatting                   |
-| `pnpm format`          | Apply Prettier explicitly                     |
-| `pnpm design:check`    | Lint/export DESIGN.md and verify its contract |
-| `pnpm design:generate` | Write disposable generated design CSS         |
+| Command                | Purpose                                         |
+| ---------------------- | ----------------------------------------------- |
+| `pnpm dev`             | Watch design/i18n generation and start Astro    |
+| `pnpm build`           | Regenerate design/i18n and build every app      |
+| `pnpm check`           | Run the complete local and CI quality gate      |
+| `pnpm typecheck`       | Run every workspace `check` task through Turbo  |
+| `pnpm storybook`       | Run the Astro UI component workbench            |
+| `pnpm storybook:build` | Build the static UI component workbench         |
+| `pnpm test`            | Run Vitest once                                 |
+| `pnpm lint`            | Coordinate workspace and root Opt-in linting    |
+| `pnpm lint:fix`        | Apply ESLint fixes in the same ownership scopes |
+| `pnpm stylelint`       | Check CSS and embedded styles                   |
+| `pnpm fmt:check`       | Coordinate workspace and root Opt-in formatting |
+| `pnpm fmt`             | Apply Prettier in the same ownership scopes     |
+| `pnpm design:check`    | Lint/export DESIGN.md and verify its contract   |
+| `pnpm design:generate` | Write disposable generated design CSS           |
+| `pnpm i18n:check`      | Check extracted English and generated types     |
+| `pnpm i18n:generate`   | Extract English copy and generate types         |
 
-Git hooks installed by Devenv are checks only. Pre-commit runs format, ESLint,
+The root lint and formatting commands dispatch the matching workspace task with
+Turbo, then run the root configuration against its explicit path list. Every
+workspace must provide `check`, `lint`, `lint:fix`, `fmt:check`, and `fmt` scripts;
+Turbo dry-run tests keep that local task contract executable. `pnpm check` adds
+generation, design and localization validation, Stylelint, Storybook, Vitest,
+and the production build to those coordinated checks.
+
+Git hooks installed by Devenv are checks only. Pre-commit runs formatting, ESLint,
 and Stylelint checks; pre-push runs `pnpm check`. Nothing silently fixes files.
 
 ## Design system
 
 `DESIGN.md` is the only source of design values. The pinned
 `@google/design.md` CLI validates it and exports a Tailwind CSS `@theme` file to
-`apps/web/src/styles/design.generated.css`. The generated file is intentionally
+`apps/web/src/assets/.generated/design.css`. The generated file is intentionally
 ignored: `prepare`, `dev`, `build`, and `check` materialize it when needed.
 
 `apps/web/src/styles/app.css` imports that file and contains stable light/dark
@@ -120,16 +153,47 @@ pnpm design:check
 
 Internationalization is enabled before the project needs a second language.
 English is the only initial locale and has no URL prefix. Add locales in
-`apps/web/src/i18n/config.ts`; the integration injects Astro's native i18n config
-from that definition, while i18next and sitemap consume the same values. Do not
-add a duplicate top-level `i18n` block to `astro.config.ts`.
+`apps/web/src/i18n/index.ts`; the integration injects Astro's native i18n config
+from that definition, while i18next and sitemap consume the same values. All
+i18next-specific extraction, type-generation, integration, and backend options
+live in `apps/web/i18next.config.ts`. Do not add a duplicate top-level `i18n`
+block to `astro.config.ts`.
 
-Interface copy and SEO metadata use typed i18next keys. Add English resources
-under `apps/web/src/i18n/locales/en/`. Authored prose belongs in localized content
-entries instead of becoming an unwieldy translation catalog.
+Interface copy and SEO metadata use typed i18next keys. English copy belongs in
+literal calls such as `t("page.title", "Home")`; the CLI extracts it into the
+ignored `apps/web/src/assets/i18next/.en/` directory that it owns. Future
+authored secondary catalogs live in sibling locale directories such as
+`apps/web/src/assets/i18next/ru/` and remain tracked and formatted. Authored
+prose belongs in localized content entries instead of becoming an unwieldy
+translation catalog.
+
+The official i18next CLI generates disposable declarations under
+`apps/web/src/@types/`. Never edit them. `prepare`, `dev`, `build`, and `check`
+materialize the generated catalog and declarations; `pnpm dev` then watches
+source translation calls for changes.
 
 `@gutenye/astro-i18next` owns locale changes during route generation. Components
-must not call the global `changeLanguage()` themselves.
+must not call the global `changeLanguage()` themselves. A pinned pnpm patch lets
+its hot-update hook follow the filesystem backend's function-valued locale path;
+remove that patch once the integration supports conditional catalog paths.
+
+## Component workbench
+
+Storybook is the executable workbench for pure UI components. Put each
+`*.stories.ts` file beside the component it describes under `src/components`.
+Stories pass translated copy, the active locale, and values derived from the
+environment through args. The component stays independent of i18next, Astro
+routing, content collections, and environment modules.
+
+The workbench imports the application stylesheet and uses the same Astro and
+Tailwind configuration as production. Run `pnpm storybook` while building UI.
+The complete `pnpm check` command builds the static workbench to verify every
+story on a clean checkout.
+
+Do not add stories for layouts or pages. Those depend on Astro's rendering
+environment and belong in colocated rendered tests. A markup-only UI component
+does not need a Vitest file unless it gains non-visual behavior that a story
+cannot verify.
 
 ## Content and SEO
 
@@ -137,8 +201,8 @@ The `site` content collection is a real singleton used by the layout. Its schema
 validates translation-key references. Add project-specific collections only when
 their content model is known.
 
-`Layout.astro` accepts a typed title key plus optional description key, image,
-canonical path, and `noindex`. It supplies canonical, Open Graph, Twitter,
+`Layout.astro` accepts translated title and optional description strings plus an
+image, canonical path, and `noindex`. It supplies canonical, Open Graph, Twitter,
 alternate-language, accessibility, and page-transition boilerplate. `robots.txt`
 and sitemap URLs derive from the same `Astro.site` value.
 
@@ -152,9 +216,11 @@ cd apps/web
 pnpm astro add mdx
 ```
 
-Then import `mdxConfig` from the root `eslint.mdx.config.mjs` and spread it before
-`eslint-config-prettier` in `eslint.config.ts`. Add a real `.mdx` page and run
-`pnpm check`; do not install MDX as a dormant dependency.
+Then import `mdxConfig` from `@tooling/eslint` in
+`apps/web/eslint.config.ts`. Keep the existing base, Astro, and internal-namespace
+layers in place; insert `...mdxConfig` immediately before
+`...eslintConfigPrettier`. Add a real `.mdx` page and run `pnpm check`; do not
+install MDX as a dormant dependency.
 
 ## Devenv and editors
 

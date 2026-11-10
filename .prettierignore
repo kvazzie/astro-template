@@ -1,10 +1,6 @@
-**/.astro
-**/dist
-**/node_modules
 .devenv
 .direnv
 .turbo
-apps/web/src/styles/design.generated.css
 coverage
 devenv.lock
 pnpm-lock.yaml
