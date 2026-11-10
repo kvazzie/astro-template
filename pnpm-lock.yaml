@@ -82,6 +82,9 @@ importers:
       '@gutenye/astro-i18next':
         specifier: ^1.0.9
         version: 1.0.9(patch_hash=a5ad2a960acd7ec837cd1d0616c82e9ef13c4975053f84c7b566583163dcd171)(i18next@26.3.6(typescript@5.9.3))
+      '@kvazzie/crush':
+        specifier: github:kvazzie/crush#fd3c5e6c86b062976a4338146f5da262881ba74e
+        version: https://codeload.github.com/kvazzie/crush/tar.gz/fd3c5e6c86b062976a4338146f5da262881ba74e(astro@7.2.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0))
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
@@ -1109,6 +1112,13 @@ packages:
 
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
+
+  '@kvazzie/crush@https://codeload.github.com/kvazzie/crush/tar.gz/fd3c5e6c86b062976a4338146f5da262881ba74e':
+    resolution: {tarball: https://codeload.github.com/kvazzie/crush/tar.gz/fd3c5e6c86b062976a4338146f5da262881ba74e}
+    version: 0.0.0
+    engines: {node: '>=24 <25'}
+    peerDependencies:
+      astro: ^7.1.6
 
   '@mdx-js/language-server@0.6.3':
     resolution: {integrity: sha512-0BvShJa2+EddSinI+mgzoOwtykqwI/HMk5ZlK1XQzxXh2Tfs9wr1tR6/x7Q1ROCKGBP9tZca752agfc94+x01w==}
@@ -6120,6 +6130,10 @@ snapshots:
       keyv: 5.6.0
 
   '@keyv/serialize@1.1.1': {}
+
+  '@kvazzie/crush@https://codeload.github.com/kvazzie/crush/tar.gz/fd3c5e6c86b062976a4338146f5da262881ba74e(astro@7.2.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0))':
+    dependencies:
+      astro: 7.2.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0)
 
   '@mdx-js/language-server@0.6.3(@volar/language-service@2.4.28)':
     dependencies:

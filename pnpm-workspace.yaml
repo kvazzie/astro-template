@@ -4,6 +4,7 @@ packages:
   - "tooling/*"
 
 allowBuilds:
+  "@kvazzie/crush": true
   "@swc/core": true
   esbuild: true
   sharp: true

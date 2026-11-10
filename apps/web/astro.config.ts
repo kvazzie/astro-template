@@ -1,4 +1,5 @@
 import sitemap from "@astrojs/sitemap";
+import * as Crush from "@kvazzie/crush";
 import tailwindcss from "@tailwindcss/vite";
 import i18next from "@gutenye/astro-i18next/integration";
 import { defineConfig, envField } from "astro/config";
@@ -8,7 +9,6 @@ import { loadEnv } from "vite";
 import * as i18nextConfig from "./i18next.config";
 import * as internalNamespaces from "./internal-namespaces";
 import * as i18n from "./src/i18n";
-import * as Crush from "./src/crush";
 
 const defaultSiteUrl = "https://example.com";
 const environment = loadEnv(

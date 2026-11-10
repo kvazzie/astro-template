@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import type { ParseKeys } from "i18next";
 
-import type * as Crush from "#/crush";
+import type * as Crush from "@kvazzie/crush";
 
 type TranslationKey = ParseKeys<"common">;
 

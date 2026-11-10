@@ -201,6 +201,14 @@ The `site` content collection is a real singleton used by the layout. Its schema
 validates translation-key references. Add project-specific collections only when
 their content model is known.
 
+Static content recovery uses the separate `@kvazzie/crush` package. Its version
+is pinned to a Git commit until a package release is available. pnpm builds that
+Git dependency on installation, as allowed by `pnpm-workspace.yaml`. The
+integration reports selected content failures after rendering and makes the
+build fail; recovered output from that build must not be deployed. See the
+[Crush documentation](https://github.com/kvazzie/crush/tree/fd3c5e6c86b062976a4338146f5da262881ba74e)
+for its API and limitations.
+
 `Layout.astro` accepts translated title and optional description strings plus an
 image, canonical path, and `noindex`. It supplies canonical, Open Graph, Twitter,
 alternate-language, accessibility, and page-transition boilerplate. `robots.txt`
