@@ -21,6 +21,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@gutenye/astro-i18next": "^1.0.9",
+    "@kvazzie/crush": "github:kvazzie/crush#fd3c5e6c86b062976a4338146f5da262881ba74e",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.6",
     "daisyui": "^5.6.10",
